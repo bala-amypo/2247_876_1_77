@@ -3,4 +3,6 @@ package com.example.demo.entity
 import jarkata.persistence.*;
 
 @Entity
-private Long 
+@ID
+private Long id;
+private String fullname;
