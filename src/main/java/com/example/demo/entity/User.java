@@ -11,8 +11,11 @@ public class User{
     private Long id;
 
     private String fullname;
-    
+
     @column(unique=true)
     private String email;
+
+    private String password;//already hased in service layer
+    
 
 }
