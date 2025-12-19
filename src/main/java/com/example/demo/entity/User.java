@@ -20,6 +20,9 @@ public class User{
     @Enumerated(@EnumType.String)
     private Role role; //return type enum which is Role
 
-    
+    @column(updatable="")
+    private LocalDateTime createdAt;
+
+
 
 }
