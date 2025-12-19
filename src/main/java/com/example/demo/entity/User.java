@@ -16,6 +16,8 @@ public class User{
     private String email;
 
     private String password;//already hased in service layer
-    
+
+    @Enumerated(@EnumType.String)
+    private 
 
 }
