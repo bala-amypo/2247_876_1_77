@@ -18,6 +18,8 @@ public class User{
     private String password;//already hased in service layer
 
     @Enumerated(@EnumType.String)
-    private 
+    private Role role; //return type enum which is Role
+
+    
 
 }
