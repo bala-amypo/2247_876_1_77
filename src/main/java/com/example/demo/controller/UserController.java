@@ -1,17 +1,15 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.UserRegisterRequest;
-import com.example.demo.dto.UserResponse;
+import com.example.demo.dto.RegisterRequest;
+import com.example.demo.dto.UserDTO;
 import com.example.demo.entity.User;
-import com.example.demo.service.UserServiceImpl;
+import com.example.demo.serviceimpl.UserServiceImpl;
+
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/users")
@@ -21,8 +19,8 @@ public class UserController {
     private UserServiceImpl userService;
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> register(
-            @Valid @RequestBody UserRegisterRequest request) {
+    public ResponseEntity<UserDTO> register(
+            @Valid @RequestBody RegisterRequest request) {
 
         User user = new User();
         user.setFullName(request.getFullName());
@@ -32,13 +30,13 @@ public class UserController {
 
         User savedUser = userService.register(user);
 
-        UserResponse response = new UserResponse();
-        response.setId(savedUser.getId());
-        response.setFullName(savedUser.getFullName());
-        response.setEmail(savedUser.getEmail());
-        response.setRole(savedUser.getRole());
-        response.setCreatedAt(savedUser.getCreatedAt());
+        UserDTO dto = new UserDTO();
+        dto.setId(savedUser.getId());
+        dto.setFullName(savedUser.getFullName());
+        dto.setEmail(savedUser.getEmail());
+        dto.setRole(savedUser.getRole());
+        dto.setCreatedAt(savedUser.getCreatedAt());
 
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 }
