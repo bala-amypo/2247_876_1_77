@@ -30,7 +30,7 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    private String password; // hashed
+    private String password; // hashed in service layer
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
