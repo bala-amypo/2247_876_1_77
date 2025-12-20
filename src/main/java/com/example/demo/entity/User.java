@@ -1,17 +1,8 @@
-package com.example.skillgap.entity;
-
-import com.example.skillgap.enums.Role;
-import jakarta.persistence.*;
-import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.time.LocalDateTime;
-
-@Data
 @Entity
-@Table(name = "users", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "email")
-})
+@Table(
+    name = "users",
+    uniqueConstraints = @UniqueConstraint(columnNames = "email")
+)
 public class User {
 
     @Id
@@ -25,11 +16,22 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    private String password; // Stored hashed (BCrypt)
+    private String password; // hashed
 
     @Enumerated(EnumType.STRING)
-    private Role role = Role.STUDENT;
+    @Column(nullable = false)
+    private Role role;
 
-    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+        if (this.role == null) {
+            this.role = Role.STUDENT;
+        }
+    }
+
+    // getters and setters
 }
