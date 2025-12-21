@@ -23,7 +23,14 @@ public class SkillServiceImpl implements SkillService {
             throw new IllegalArgumentException("Skill already exists");
         }
 
+        skill.setActive(true);
         return skillRepository.save(skill);
+    }
+
+    @Override
+    public Skill getSkillById(Long id) {
+        return skillRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Skill not found"));
     }
 
     @Override
@@ -32,8 +39,16 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
-    public Skill getSkillById(Long id) {
-        return skillRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Skill not found"));
+    public Skill activateSkill(Long id) {
+        Skill skill = getSkillById(id);
+        skill.setActive(true);
+        return skillRepository.save(skill);
+    }
+
+    @Override
+    public Skill deactivateSkill(Long id) {
+        Skill skill = getSkillById(id);
+        skill.setActive(false);
+        return skillRepository.save(skill);
     }
 }
