@@ -5,6 +5,8 @@ import com.example.demo.repository.StudentProfileRepository;
 import com.example.demo.service.StudentProfileService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class StudentProfileServiceImpl implements StudentProfileService {
 
@@ -22,5 +24,10 @@ public class StudentProfileServiceImpl implements StudentProfileService {
         }
 
         return repository.save(profile);
+    }
+
+    @Override
+    public List<StudentProfile> getAll() {
+        return repository.findAll();
     }
 }
