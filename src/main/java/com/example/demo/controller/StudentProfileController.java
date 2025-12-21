@@ -24,8 +24,13 @@ public class StudentProfileController {
         return ResponseEntity.ok(service.createProfile(profile));
     }
 
-    @GetMapping
-    public ResponseEntity<List<StudentProfile>> getAll() {
-        return ResponseEntity.ok(service.getAll());
-    }
+    @GetMapping("/enrollment/{enrollmentId}")
+     public ResponseEntity<StudentProfile> getByEnrollment(
+        @PathVariable String enrollmentId) {
+
+    return ResponseEntity.ok(
+            service.getByEnrollmentId(enrollmentId)
+    );
+}
+
 }
