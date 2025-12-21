@@ -23,6 +23,10 @@ public class SecurityConfig {
                 ).permitAll()
                 .anyRequest().permitAll()
             )
+            .requestMatchers(
+                 "/api/assessments/**"
+            ).permitAll()
+
             .formLogin(form -> form.disable())
             .httpBasic(basic -> basic.disable());
 
