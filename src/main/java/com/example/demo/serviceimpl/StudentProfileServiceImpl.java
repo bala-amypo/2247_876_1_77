@@ -30,4 +30,12 @@ public class StudentProfileServiceImpl implements StudentProfileService {
     public List<StudentProfile> getAll() {
         return repository.findAll();
     }
+
+    // ✅ THIS METHOD WAS MISSING — NOW FIXED
+    @Override
+    public StudentProfile getByEnrollmentId(String enrollmentId) {
+        return repository.findByEnrollmentId(enrollmentId)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Student not found"));
+    }
 }
