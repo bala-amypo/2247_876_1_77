@@ -19,15 +19,11 @@ public class SecurityConfig {
                 .requestMatchers(
                         "/v3/api-docs/**",
                         "/swagger-ui/**",
-                        "/swagger-ui.html"
+                        "/swagger-ui.html",
+                        "/api/assessments/**"
                 ).permitAll()
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
             )
-            .requestMatchers(
-                 "/api/assessments/**"
-            ).permitAll()
-            .anyRequest().authenticated();
-
             .formLogin(form -> form.disable())
             .httpBasic(basic -> basic.disable());
 
