@@ -26,6 +26,7 @@ public class SecurityConfig {
             .requestMatchers(
                  "/api/assessments/**"
             ).permitAll()
+            .anyRequest().authenticated();
 
             .formLogin(form -> form.disable())
             .httpBasic(basic -> basic.disable());
