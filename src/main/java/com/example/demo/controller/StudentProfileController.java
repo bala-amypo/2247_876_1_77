@@ -1,55 +1,81 @@
-package com.example.demo.controller;
+package com.example.demo.entity;
 
-import com.example.demo.entity.StudentProfile;
-import com.example.demo.service.StudentProfileService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import jakarta.persistence.*;
 
-import java.util.List;
+@Entity
+@Table(
+    name = "student_profiles",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = "enrollment_id")
+    }
+)
+public class StudentProfile {
 
-@RestController
-@RequestMapping("/api/students")
-public class StudentProfileController {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private final StudentProfileService studentProfileService;
+    /* ---------------- Relations ---------------- */
 
-    public StudentProfileController(StudentProfileService studentProfileService) {
-        this.studentProfileService = studentProfileService;
+    @OneToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    /* ---------------- Fields ---------------- */
+
+    @Column(name = "enrollment_id", nullable = false, unique = true)
+    private String enrollmentId;
+
+    private String cohort;
+
+    private Integer yearLevel;
+
+    @Column(nullable = false)
+    private Boolean active = true;
+
+    /* ---------------- Getters & Setters ---------------- */
+
+    public Long getId() {
+        return id;
     }
 
-    // POST /api/students
-    @PostMapping
-    public ResponseEntity<StudentProfile> createProfile(
-            @RequestBody StudentProfile profile) {
-
-        return ResponseEntity.ok(
-                studentProfileService.createProfile(profile)
-        );
+    public User getUser() {
+        return user;
     }
 
-    // GET /api/students/{id}
-    @GetMapping("/{id}")
-    public ResponseEntity<StudentProfile> getById(@PathVariable Long id) {
-        return ResponseEntity.ok(
-                studentProfileService.getById(id)
-        );
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    // GET /api/students/enrollment/{id}
-    @GetMapping("/enrollment/{id}")
-    public ResponseEntity<StudentProfile> getByEnrollment(
-            @PathVariable String id) {
-
-        return ResponseEntity.ok(
-                studentProfileService.getByEnrollmentId(id)
-        );
+    public String getEnrollmentId() {
+        return enrollmentId;
     }
 
-    // GET /api/students
-    @GetMapping
-    public ResponseEntity<List<StudentProfile>> getAll() {
-        return ResponseEntity.ok(
-                studentProfileService.getAll()
-        );
+    public void setEnrollmentId(String enrollmentId) {
+        this.enrollmentId = enrollmentId;
+    }
+
+    public String getCohort() {
+        return cohort;
+    }
+
+    public void setCohort(String cohort) {
+        this.cohort = cohort;
+    }
+
+    public Integer getYearLevel() {
+        return yearLevel;
+    }
+
+    public void setYearLevel(Integer yearLevel) {
+        this.yearLevel = yearLevel;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }
