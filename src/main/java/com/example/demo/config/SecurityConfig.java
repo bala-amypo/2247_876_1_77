@@ -11,28 +11,26 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig {
 
     @Bean
-   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-    http
-        .csrf(csrf -> csrf.disable())
-        .authorizeHttpRequests(auth -> auth
-            .requestMatchers(
-                "/",                     // ✅ ROOT URL
-                "/v3/api-docs/**",
-                "/swagger-ui/**",
-                "/swagger-ui.html",
-                "/api/users/**",
-                "/api/skills/**",
-                "/api/assessments/**"
-            ).permitAll()
-            .anyRequest().authenticated()
-        )
-        .formLogin(form -> form.disable())
-        .httpBasic(basic -> basic.disable());
+        http
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(
+                    "/",
+                    "/v3/api-docs/**",
+                    "/swagger-ui/**",
+                    "/swagger-ui.html",
+                    "/api/users/**",
+                    "/api/skills/**",
+                    "/api/assessments/**"
+                ).permitAll()
+                .anyRequest().authenticated()
+            )
+            .formLogin(form -> form.disable())
+            .httpBasic(basic -> basic.disable());
 
-    return http.build();
-}
-
+        return http.build();
     }
 
     @Bean
