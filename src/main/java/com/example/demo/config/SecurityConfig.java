@@ -16,15 +16,16 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-    .requestMatchers(
-        "/",
-        "/v3/api-docs/**",
-        "/swagger-ui/**",
-        "/swagger-ui.html",
-        "/api/**"
-    ).permitAll()
-)
-
+                .requestMatchers(
+                    "/",
+                    "/health",
+                    "/v3/api-docs/**",
+                    "/swagger-ui/**",
+                    "/swagger-ui.html",
+                    "/api/**"
+                ).permitAll()
+                .anyRequest().permitAll()   // 🔥 THIS LINE FIXES 403
+            )
             .formLogin(form -> form.disable())
             .httpBasic(basic -> basic.disable());
 
