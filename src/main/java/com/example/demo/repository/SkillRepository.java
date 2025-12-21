@@ -1,12 +1,11 @@
 package com.example.demo.repository;
 
-import com.example.demo.entity.StudentProfile;
+import com.example.demo.entity.Skill;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface StudentProfileRepository
-        extends JpaRepository<StudentProfile, Long> {
+public interface SkillRepository extends JpaRepository<Skill, Long> {
 
-    Optional<StudentProfile> findByEnrollmentId(String enrollmentId);
+    Optional<Skill> findBySkillName(String skillName);
 }

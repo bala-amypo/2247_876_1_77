@@ -5,6 +5,8 @@ import com.example.demo.repository.SkillRepository;
 import com.example.demo.service.SkillService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SkillServiceImpl implements SkillService {
 
@@ -17,30 +19,21 @@ public class SkillServiceImpl implements SkillService {
     @Override
     public Skill createSkill(Skill skill) {
 
-        if (skillRepository.existsBySkillName(skill.getSkillName())) {
-            throw new IllegalArgumentException(
-                "Skill with name '" + skill.getSkillName() + "' already exists"
-            );
+        if (skillRepository.findBySkillName(skill.getSkillName()).isPresent()) {
+            throw new IllegalArgumentException("Skill already exists");
         }
 
         return skillRepository.save(skill);
     }
 
     @Override
-    public Skill deactivateSkill(Long skillId) {
-        Skill skill = skillRepository.findById(skillId)
-                .orElseThrow(() -> new IllegalArgumentException("Skill not found"));
-
-        skill.setActive(false);
-        return skillRepository.save(skill);
+    public List<Skill> getAllSkills() {
+        return skillRepository.findAll();
     }
 
     @Override
-    public Skill activateSkill(Long skillId) {
-        Skill skill = skillRepository.findById(skillId)
+    public Skill getSkillById(Long id) {
+        return skillRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Skill not found"));
-
-        skill.setActive(true);
-        return skillRepository.save(skill);
     }
 }
