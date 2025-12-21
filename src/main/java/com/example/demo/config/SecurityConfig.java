@@ -16,14 +16,15 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                        "/v3/api-docs/**",
-                        "/swagger-ui/**",
-                        "/swagger-ui.html",
-                        "/api/assessments/**",
-                        "/api/**"
-                ).permitAll()
-            )
+    .requestMatchers(
+        "/",
+        "/v3/api-docs/**",
+        "/swagger-ui/**",
+        "/swagger-ui.html",
+        "/api/**"
+    ).permitAll()
+)
+
             .formLogin(form -> form.disable())
             .httpBasic(basic -> basic.disable());
 
