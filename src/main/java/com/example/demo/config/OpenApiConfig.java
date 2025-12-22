@@ -13,7 +13,7 @@ public class OpenApiConfig {
     @Bean
     public OpenAPI openAPI() {
         Server server = new Server();
-        server.setUrl("https://9046.pro604cr.amypo.ai");
+        server.setUrl("https://9348.pro604cr.amypo.ai/");
         server.setDescription("AmyPo Server");
 
         return new OpenAPI()
