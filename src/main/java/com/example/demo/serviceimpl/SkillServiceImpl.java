@@ -1,33 +1,33 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.entity.Skill;
-import com.example.demo.repository.SkillRepository;
-import com.example.demo.service.SkillService;
+import com.example.demo.entity.StudentProfile;
+import com.example.demo.repository.StudentProfileRepository;
+import com.example.demo.service.StudentProfileService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class SkillServiceImpl implements SkillService {
+public class StudentProfileServiceImpl implements StudentProfileService {
 
-    private final SkillRepository skillRepository;
+    private final StudentProfileRepository repository;
 
-    public SkillServiceImpl(SkillRepository skillRepository) {
-        this.skillRepository = skillRepository;
+    public StudentProfileServiceImpl(StudentProfileRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public Skill createSkill(Skill skill) {
-        return skillRepository.save(skill);
+    public StudentProfile createProfile(StudentProfile profile) {
+        return repository.save(profile);
     }
 
     @Override
-    public Skill getSkillById(Long id) {
-        return skillRepository.findById(id).orElse(null);
+    public List<StudentProfile> getAll() {
+        return repository.findAll();
     }
 
     @Override
-    public List<Skill> getAllSkills() {
-        return skillRepository.findAll();
+    public StudentProfile getByEnrollmentId(String enrollmentId) {
+        return repository.findByEnrollmentId(enrollmentId).orElse(null);
     }
 }
