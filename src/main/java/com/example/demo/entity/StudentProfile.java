@@ -1,41 +1,35 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
-@Table(
-    name = "student_profiles",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = "enrollmentId")
-    }
-)
 public class StudentProfile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /* ---------- Relationships ---------- */
-
-    @OneToOne(optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    /* ---------- Fields ---------- */
-
-    @Column(nullable = false, unique = true)
     private String enrollmentId;
-
     private String cohort;
-
-    private Integer yearLevel;
-
-    @Column(nullable = false)
-    private Boolean active = true;
+    private int yearLevel;
+    private boolean active;
 
     /* ---------- Constructors ---------- */
 
-    public StudentProfile() {}
+    public StudentProfile() {
+    }
+
+    public StudentProfile(Long id, String enrollmentId, String cohort,
+                          int yearLevel, boolean active) {
+        this.id = id;
+        this.enrollmentId = enrollmentId;
+        this.cohort = cohort;
+        this.yearLevel = yearLevel;
+        this.active = active;
+    }
 
     /* ---------- Getters & Setters ---------- */
 
@@ -43,12 +37,8 @@ public class StudentProfile {
         return id;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getEnrollmentId() {
@@ -67,19 +57,19 @@ public class StudentProfile {
         this.cohort = cohort;
     }
 
-    public Integer getYearLevel() {
+    public int getYearLevel() {
         return yearLevel;
     }
 
-    public void setYearLevel(Integer yearLevel) {
+    public void setYearLevel(int yearLevel) {
         this.yearLevel = yearLevel;
     }
 
-    public Boolean getActive() {
+    public boolean isActive() {
         return active;
     }
 
-    public void setActive(Boolean active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 }
