@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface RecommendationService {
 
-    void generateRecommendations(Long studentProfileId);
+    SkillGapRecommendation createRecommendation(SkillGapRecommendation recommendation);
 
-    List<SkillGapRecommendation> getRecommendationsByStudent(Long studentProfileId);
+    List<SkillGapRecommendation> getAllRecommendations();
 }
