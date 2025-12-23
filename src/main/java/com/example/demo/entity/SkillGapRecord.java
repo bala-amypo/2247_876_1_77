@@ -99,3 +99,4 @@ public class SkillGapRecord {
         this.calculatedAt = calculatedAt;
     }
 }
++
