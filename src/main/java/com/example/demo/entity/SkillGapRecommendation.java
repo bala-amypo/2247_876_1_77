@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SkillGapRecommendation {
+public class SkillGapRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,9 +18,8 @@ public class SkillGapRecommendation {
     private Long studentProfileId;
     private Long skillId;
 
-    private String recommendedAction;
-    private String priority;
+    private double currentScore;
+    private double targetScore;
     private double gapScore;
-    private String generatedBy;
-    private String generatedAt;
+    private String calculatedAt;
 }
