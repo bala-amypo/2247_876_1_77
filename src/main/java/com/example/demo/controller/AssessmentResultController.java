@@ -12,7 +12,6 @@ public class AssessmentResultController {
 
     private final AssessmentServiceImpl service;
 
-    // ✅ CONSTRUCTOR NAME MUST MATCH CLASS NAME
     public AssessmentResultController(AssessmentServiceImpl service) {
         this.service = service;
     }

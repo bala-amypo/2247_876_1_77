@@ -5,25 +5,22 @@ import com.example.demo.repository.AssessmentResultRepository;
 
 import java.util.List;
 
-public class AssessmentResultServiceImpl {
+public class AssessmentServiceImpl {
 
     private final AssessmentResultRepository repository;
 
-    public AssessmentResultServiceImpl(AssessmentResultRepository repository) {
+    // REQUIRED constructor (tests use new)
+    public AssessmentServiceImpl(AssessmentResultRepository repository) {
         this.repository = repository;
     }
 
+    // REQUIRED by controller & tests
     public AssessmentResult save(AssessmentResult result) {
         return repository.save(result);
     }
 
+    // REQUIRED by tests
     public List<AssessmentResult> findRecentByStudent(Long studentProfileId) {
         return repository.findRecentByStudent(studentProfileId);
-    }
-
-    public AssessmentResult findByStudentAndSkill(Long studentId, Long skillId) {
-        return repository
-                .findByStudentProfileIdAndSkillId(studentId, skillId)
-                .orElse(null);
     }
 }
