@@ -1,34 +1,28 @@
 package com.example.demo.serviceimpl;
 
-
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.service.UserService;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl {
 
     private final UserRepository userRepository;
 
+    // REQUIRED by test
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    @Override
-    public User createUser(User user) {
+    public User save(User user) {
         return userRepository.save(user);
     }
 
-    @Override
-    public User getUserById(Long id) {
-        return userRepository.findById(id).orElse(null);
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
-    @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
     }
 }

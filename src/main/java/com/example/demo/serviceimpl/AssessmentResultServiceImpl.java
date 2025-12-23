@@ -1,29 +1,30 @@
 package com.example.demo.serviceimpl;
 
-
 import com.example.demo.entity.AssessmentResult;
 import com.example.demo.repository.AssessmentResultRepository;
-import com.example.demo.service.AssessmentResultService;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class AssessmentResultServiceImpl implements AssessmentResultService {
+public class AssessmentServiceImpl {
 
-    private final AssessmentResultRepository assessmentResultRepository;
+    private final AssessmentResultRepository repository;
 
-    public AssessmentResultServiceImpl(AssessmentResultRepository assessmentResultRepository) {
-        this.assessmentResultRepository = assessmentResultRepository;
+    // REQUIRED by test
+    public AssessmentServiceImpl(AssessmentResultRepository repository) {
+        this.repository = repository;
     }
 
-    @Override
-    public AssessmentResult createAssessmentResult(AssessmentResult assessmentResult) {
-        return assessmentResultRepository.save(assessmentResult);
+    public AssessmentResult save(AssessmentResult result) {
+        return repository.save(result);
     }
 
-    @Override
-    public List<AssessmentResult> getAllAssessmentResults() {
-        return assessmentResultRepository.findAll();
+    public List<AssessmentResult> findRecentByStudent(Long studentId) {
+        return repository.findRecentByStudent(studentId);
+    }
+
+    public AssessmentResult findByStudentAndSkill(Long studentId, Long skillId) {
+        return repository
+                .findByStudentProfileIdAndSkillId(studentId, skillId)
+                .orElse(null);
     }
 }

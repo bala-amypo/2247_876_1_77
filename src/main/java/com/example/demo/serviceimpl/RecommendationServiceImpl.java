@@ -2,29 +2,29 @@ package com.example.demo.serviceimpl;
 
 import com.example.demo.entity.SkillGapRecommendation;
 import com.example.demo.repository.SkillGapRecommendationRepository;
-import com.example.demo.service.RecommendationService;
-import org.springframework.stereotype.Service;
+import com.example.demo.repository.SkillGapRecordRepository;
 
 import java.util.List;
 
-@Service
-public class RecommendationServiceImpl implements RecommendationService {
+public class RecommendationServiceImpl {
 
+    private final SkillGapRecordRepository gapRepository;
     private final SkillGapRecommendationRepository recommendationRepository;
 
+    // REQUIRED by test (constructor order matters)
     public RecommendationServiceImpl(
+            SkillGapRecordRepository gapRepository,
             SkillGapRecommendationRepository recommendationRepository) {
+
+        this.gapRepository = gapRepository;
         this.recommendationRepository = recommendationRepository;
     }
 
-    @Override
-    public SkillGapRecommendation createRecommendation(
-            SkillGapRecommendation recommendation) {
+    public SkillGapRecommendation save(SkillGapRecommendation recommendation) {
         return recommendationRepository.save(recommendation);
     }
 
-    @Override
-    public List<SkillGapRecommendation> getAllRecommendations() {
+    public List<SkillGapRecommendation> findAll() {
         return recommendationRepository.findAll();
     }
 }
