@@ -1,93 +1,79 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
-@Table(name = "skill_gap_records")
 public class SkillGapRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /* ---------------- Relations ---------------- */
+    private Long studentProfileId;
+    private Long skillId;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "student_profile_id", nullable = false)
-    private StudentProfile studentProfile;
+    private double currentScore;
+    private double targetScore;
+    private double gapScore;
+    private String calculatedAt;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "skill_id", nullable = false)
-    private Skill skill;
-
-    /* ---------------- Gap Data ---------------- */
-
-    @Column(nullable = false)
-    private Double currentScore;
-
-    @Column(nullable = false)
-    private Double targetScore;
-
-    @Column(nullable = false)
-    private Double gapScore;
-
-    @Column(nullable = false)
-    private LocalDateTime calculatedAt;
-
-    /* ---------------- Constructors ---------------- */
+    /* ---------- Constructors ---------- */
 
     public SkillGapRecord() {
-        this.calculatedAt = LocalDateTime.now();
     }
 
-    /* ---------------- Getters & Setters ---------------- */
+    public SkillGapRecord(Long id, Long studentProfileId, Long skillId,
+                          double currentScore, double targetScore,
+                          double gapScore, String calculatedAt) {
+        this.id = id;
+        this.studentProfileId = studentProfileId;
+        this.skillId = skillId;
+        this.currentScore = currentScore;
+        this.targetScore = targetScore;
+        this.gapScore = gapScore;
+        this.calculatedAt = calculatedAt;
+    }
+
+    /* ---------- Getters & Setters ---------- */
 
     public Long getId() {
         return id;
     }
 
-    public StudentProfile getStudentProfile() {
-        return studentProfile;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setStudentProfile(StudentProfile studentProfile) {
-        this.studentProfile = studentProfile;
+    public Long getStudentProfileId() {
+        return studentProfileId;
     }
 
-    public Skill getSkill() {
-        return skill;
+    public void setStudentProfileId(Long studentProfileId) {
+        this.studentProfileId = studentProfileId;
     }
 
-    public void setSkill(Skill skill) {
-        this.skill = skill;
+    public Long getSkillId() {
+        return skillId;
     }
 
-    public Double getCurrentScore() {
+    public void setSkillId(Long skillId) {
+        this.skillId = skillId;
+    }
+
+    public double getCurrentScore() {
         return currentScore;
     }
 
-    public void setCurrentScore(Double currentScore) {
+    public void setCurrentScore(double currentScore) {
         this.currentScore = currentScore;
     }
 
-    public Double getTargetScore() {
+    public double getTargetScore() {
         return targetScore;
     }
 
-    public void setTargetScore(Double targetScore) {
+    public void setTargetScore(double targetScore) {
         this.targetScore = targetScore;
-    }
-
-    public Double getGapScore() {
-        return gapScore;
-    }
-
-    public void setGapScore(Double gapScore) {
-        this.gapScore = gapScore;
-    }
-
-    public LocalDateTime getCalculatedAt() {
-        return calculatedAt;
-    }
-}

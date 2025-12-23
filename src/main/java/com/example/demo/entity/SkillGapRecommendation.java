@@ -1,66 +1,108 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
-@Table(name = "skill_gap_recommendations")
 public class SkillGapRecommendation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false)
-    private StudentProfile studentProfile;
+    private Long studentProfileId;
+    private Long skillId;
 
-    @ManyToOne(optional = false)
-    private Skill skill;
-
-    @Column(nullable = false)
     private String recommendedAction;
-
-    @Column(nullable = false)
-    private String priority; // HIGH / MEDIUM / LOW
-
-    private Double gapScore;
-
+    private String priority;
+    private double gapScore;
     private String generatedBy;
+    private String generatedAt;
 
-    private LocalDateTime generatedAt;
+    /* ---------- Constructors ---------- */
 
-    @PrePersist
-    public void onCreate() {
-        this.generatedAt = LocalDateTime.now();
+    public SkillGapRecommendation() {
     }
 
-    /* Getters & Setters */
-
-    public Long getId() { return id; }
-
-    public StudentProfile getStudentProfile() { return studentProfile; }
-    public void setStudentProfile(StudentProfile studentProfile) {
-        this.studentProfile = studentProfile;
+    public SkillGapRecommendation(Long id, Long studentProfileId, Long skillId,
+                                  String recommendedAction, String priority,
+                                  double gapScore, String generatedBy,
+                                  String generatedAt) {
+        this.id = id;
+        this.studentProfileId = studentProfileId;
+        this.skillId = skillId;
+        this.recommendedAction = recommendedAction;
+        this.priority = priority;
+        this.gapScore = gapScore;
+        this.generatedBy = generatedBy;
+        this.generatedAt = generatedAt;
     }
 
-    public Skill getSkill() { return skill; }
-    public void setSkill(Skill skill) { this.skill = skill; }
+    /* ---------- Getters & Setters ---------- */
 
-    public String getRecommendedAction() { return recommendedAction; }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getStudentProfileId() {
+        return studentProfileId;
+    }
+
+    public void setStudentProfileId(Long studentProfileId) {
+        this.studentProfileId = studentProfileId;
+    }
+
+    public Long getSkillId() {
+        return skillId;
+    }
+
+    public void setSkillId(Long skillId) {
+        this.skillId = skillId;
+    }
+
+    public String getRecommendedAction() {
+        return recommendedAction;
+    }
+
     public void setRecommendedAction(String recommendedAction) {
         this.recommendedAction = recommendedAction;
     }
 
-    public String getPriority() { return priority; }
-    public void setPriority(String priority) { this.priority = priority; }
+    public String getPriority() {
+        return priority;
+    }
 
-    public Double getGapScore() { return gapScore; }
-    public void setGapScore(Double gapScore) { this.gapScore = gapScore; }
+    public void setPriority(String priority) {
+        this.priority = priority;
+    }
 
-    public String getGeneratedBy() { return generatedBy; }
+    public double getGapScore() {
+        return gapScore;
+    }
+
+    public void setGapScore(double gapScore) {
+        this.gapScore = gapScore;
+    }
+
+    public String getGeneratedBy() {
+        return generatedBy;
+    }
+
     public void setGeneratedBy(String generatedBy) {
         this.generatedBy = generatedBy;
     }
 
-    public LocalDateTime getGeneratedAt() { return generatedAt; }
+    public String getGeneratedAt() {
+        return generatedAt;
+    }
+
+    public void setGeneratedAt(String generatedAt) {
+        this.generatedAt = generatedAt;
+    }
 }
