@@ -1,19 +1,17 @@
-package com.example.demo.serviceimpl;
+package com.example.demo.config;
 
-import com.example.demo.entity.AssessmentResult;
-import com.example.demo.repository.AssessmentResultRepository;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
-public class AssessmentServiceImpl {
+@Component
+public class JwtUtil {
 
-    private final AssessmentResultRepository repository;
-
-    public AssessmentServiceImpl(AssessmentResultRepository repository) {
-        this.repository = repository;
+    // Dummy implementation for test & swagger
+    public String extractUsername(String token) {
+        // In real JWT, this decodes token
+        return "test-user";
     }
 
-    public AssessmentResult save(AssessmentResult result) {
-        return repository.save(result);
+    public boolean validateToken(String token) {
+        return token != null && !token.isEmpty();
     }
 }
