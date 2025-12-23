@@ -20,14 +20,18 @@ public class SkillGapRecord {
     private double gapScore;
     private String calculatedAt;
 
-    /* ---------- Constructors ---------- */
+    // -------- Constructors --------
 
     public SkillGapRecord() {
     }
 
-    public SkillGapRecord(Long id, Long studentProfileId, Long skillId,
-                          double currentScore, double targetScore,
-                          double gapScore, String calculatedAt) {
+    public SkillGapRecord(Long id,
+                          Long studentProfileId,
+                          Long skillId,
+                          double currentScore,
+                          double targetScore,
+                          double gapScore,
+                          String calculatedAt) {
         this.id = id;
         this.studentProfileId = studentProfileId;
         this.skillId = skillId;
@@ -37,7 +41,7 @@ public class SkillGapRecord {
         this.calculatedAt = calculatedAt;
     }
 
-    /* ---------- Getters & Setters ---------- */
+    // -------- Getters & Setters --------
 
     public Long getId() {
         return id;
@@ -77,3 +81,21 @@ public class SkillGapRecord {
 
     public void setTargetScore(double targetScore) {
         this.targetScore = targetScore;
+    }
+
+    public double getGapScore() {
+        return gapScore;
+    }
+
+    public void setGapScore(double gapScore) {
+        this.gapScore = gapScore;
+    }
+
+    public String getCalculatedAt() {
+        return calculatedAt;
+    }
+
+    public void setCalculatedAt(String calculatedAt) {
+        this.calculatedAt = calculatedAt;
+    }
+}
