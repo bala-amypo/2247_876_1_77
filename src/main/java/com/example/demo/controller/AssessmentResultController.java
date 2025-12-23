@@ -7,23 +7,27 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/assessments")
+@RequestMapping("/api/assessments")
 public class AssessmentResultController {
 
     private final AssessmentResultServiceImpl service;
 
-    // ✅ constructor name is correct
     public AssessmentResultController(AssessmentResultServiceImpl service) {
         this.service = service;
     }
 
     @PostMapping
-    public AssessmentResult save(@RequestBody AssessmentResult result) {
+    public AssessmentResult create(@RequestBody AssessmentResult result) {
         return service.save(result);
     }
 
-    @GetMapping("/student/{id}")
-    public List<AssessmentResult> getByStudent(@PathVariable Long id) {
-        return service.findRecentByStudent(id);
+    @GetMapping("/student/{studentId}")
+    public List<AssessmentResult> getByStudent(@PathVariable Long studentId) {
+        return service.findByStudent(studentId);
+    }
+
+    @GetMapping("/skill/{skillId}")
+    public List<AssessmentResult> getBySkill(@PathVariable Long skillId) {
+        return service.findBySkill(skillId);
     }
 }

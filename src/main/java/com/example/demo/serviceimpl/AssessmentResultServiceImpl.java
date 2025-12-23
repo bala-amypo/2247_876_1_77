@@ -2,11 +2,9 @@ package com.example.demo.serviceimpl;
 
 import com.example.demo.entity.AssessmentResult;
 import com.example.demo.repository.AssessmentResultRepository;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service   // ✅ REQUIRED for Spring context
 public class AssessmentResultServiceImpl {
 
     private final AssessmentResultRepository repository;
@@ -19,7 +17,11 @@ public class AssessmentResultServiceImpl {
         return repository.save(result);
     }
 
-    public List<AssessmentResult> findRecentByStudent(Long studentProfileId) {
-        return repository.findRecentByStudent(studentProfileId);
+    public List<AssessmentResult> findByStudent(Long studentProfileId) {
+        return repository.findByStudentProfileId(studentProfileId);
+    }
+
+    public List<AssessmentResult> findBySkill(Long skillId) {
+        return repository.findBySkillId(skillId);
     }
 }
