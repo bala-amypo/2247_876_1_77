@@ -1,8 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Skill;
-import com.example.demo.service.SkillService;
-import org.springframework.http.ResponseEntity;
+import com.example.demo.serviceimpl.SkillServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,24 +10,19 @@ import java.util.List;
 @RequestMapping("/skills")
 public class SkillController {
 
-    private final SkillService skillService;
+    private final SkillServiceImpl service;
 
-    public SkillController(SkillService skillService) {
-        this.skillService = skillService;
+    public SkillController(SkillServiceImpl service) {
+        this.service = service;
     }
 
     @PostMapping
-    public ResponseEntity<Skill> createSkill(@RequestBody Skill skill) {
-        return ResponseEntity.ok(skillService.createSkill(skill));
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Skill> getSkillById(@PathVariable Long id) {
-        return ResponseEntity.ok(skillService.getSkillById(id));
+    public Skill save(@RequestBody Skill skill) {
+        return service.save(skill);
     }
 
     @GetMapping
-    public ResponseEntity<List<Skill>> getAllSkills() {
-        return ResponseEntity.ok(skillService.getAllSkills());
+    public List<Skill> findAll() {
+        return service.findAll();
     }
 }

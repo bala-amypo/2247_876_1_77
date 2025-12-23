@@ -1,8 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.SkillGapRecord;
-import com.example.demo.service.SkillGapService;
-import org.springframework.http.ResponseEntity;
+import com.example.demo.serviceimpl.SkillGapServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,24 +10,14 @@ import java.util.List;
 @RequestMapping("/gaps")
 public class SkillGapController {
 
-    private final SkillGapService skillGapService;
+    private final SkillGapServiceImpl service;
 
-    public SkillGapController(SkillGapService skillGapService) {
-        this.skillGapService = skillGapService;
-    }
-
-    @PostMapping
-    public ResponseEntity<SkillGapRecord> createGap(
-            @RequestBody SkillGapRecord record) {
-        return ResponseEntity.ok(
-                skillGapService.createSkillGapRecord(record)
-        );
+    public SkillGapController(SkillGapServiceImpl service) {
+        this.service = service;
     }
 
     @GetMapping
-    public ResponseEntity<List<SkillGapRecord>> getAllGaps() {
-        return ResponseEntity.ok(
-                skillGapService.getAllSkillGapRecords()
-        );
+    public List<SkillGapRecord> findAll() {
+        return service.findAll();
     }
 }
