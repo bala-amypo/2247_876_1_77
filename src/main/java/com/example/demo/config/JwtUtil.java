@@ -1,15 +1,19 @@
-package com.example.demo.config;
+package com.example.demo.serviceimpl;
 
-import org.springframework.stereotype.Component;
+import com.example.demo.entity.AssessmentResult;
+import com.example.demo.repository.AssessmentResultRepository;
+import org.springframework.stereotype.Service;
 
-@Component
-public class JwtUtil {
+@Service
+public class AssessmentServiceImpl {
 
-    public String generateToken(String username) {
-        return "dummy-token-for-" + username;
+    private final AssessmentResultRepository repository;
+
+    public AssessmentServiceImpl(AssessmentResultRepository repository) {
+        this.repository = repository;
     }
 
-    public String extractUsername(String token) {
-        return token.replace("dummy-token-for-", "");
+    public AssessmentResult save(AssessmentResult result) {
+        return repository.save(result);
     }
 }
