@@ -18,5 +18,5 @@ public class StudentProfile {
     private String enrollmentId;
     private String cohort;
     private int yearLevel;
-    private boolean active;
+    private Boolean active;
 }

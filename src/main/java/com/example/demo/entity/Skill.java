@@ -22,5 +22,5 @@ public class Skill {
     private String category;
     private String description;
     private int minCompetencyScore;
-    private boolean active;
+    private Boolean active;
 }
