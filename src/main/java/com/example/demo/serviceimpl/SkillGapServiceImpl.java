@@ -1,4 +1,5 @@
-package com.example.demo.service.impl;
+package com.example.demo.serviceimpl;
+
 
 import com.example.demo.entity.SkillGapRecord;
 import com.example.demo.repository.SkillGapRecordRepository;
