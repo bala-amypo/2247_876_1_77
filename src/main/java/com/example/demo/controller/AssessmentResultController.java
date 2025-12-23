@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.AssessmentResult;
-import com.example.demo.serviceimpl.AssessmentServiceImpl;
+import com.example.demo.serviceimpl.AssessmentResultServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,9 +10,10 @@ import java.util.List;
 @RequestMapping("/assessments")
 public class AssessmentResultController {
 
-    private final AssessmentServiceImpl service;
+    private final AssessmentResultServiceImpl service;
 
-    public AssessmentResultController(AssessmentServiceImpl service) {
+    // ✅ constructor name is correct
+    public AssessmentResultController(AssessmentResultServiceImpl service) {
         this.service = service;
     }
 
