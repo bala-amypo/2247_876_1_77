@@ -18,5 +18,8 @@ public class User {
     private String fullName;
     private String email;
     private String password;
-    private Role role;
+
+    // ✅ DEFAULT VALUE REQUIRED BY TESTS
+    @Builder.Default
+    private Role role = Role.STUDENT;
 }

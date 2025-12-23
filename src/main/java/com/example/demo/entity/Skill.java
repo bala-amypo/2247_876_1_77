@@ -15,12 +15,15 @@ public class Skill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // REQUIRED BY TESTS
+    // ✅ REQUIRED BY TEST CASES
     private String code;
 
     private String skillName;
     private String category;
     private String description;
     private int minCompetencyScore;
-    private Boolean active;
+
+    // ✅ BOOLEAN → Boolean + DEFAULT VALUE
+    @Builder.Default
+    private Boolean active = true;
 }
