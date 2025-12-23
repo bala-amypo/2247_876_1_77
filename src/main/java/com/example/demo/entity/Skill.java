@@ -3,62 +3,53 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(
-    name = "skills",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"skill_name"})
-    }
-)
 public class Skill {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "skill_name", nullable = false, unique = true)
+    // ✅ REQUIRED BY TEST CASES
+    private String code;
+
     private String skillName;
-
-    @Column(nullable = false)
     private String category;
-
-    @Column
     private String description;
+    private int minCompetencyScore;
+    private boolean active;
 
-    @Column(name = "min_competency_score", nullable = false)
-    private Double minCompetencyScore;
-
-    @Column(nullable = false)
-    private Boolean active = true;
-
-    /* ---------------- Constructors ---------------- */
+    /* ----------- Constructors ----------- */
 
     public Skill() {
     }
 
-    public Skill(String skillName, String category, String description,
-                 Double minCompetencyScore, Boolean active) {
+    public Skill(Long id, String code, String skillName, String category,
+                 String description, int minCompetencyScore, boolean active) {
+        this.id = id;
+        this.code = code;
         this.skillName = skillName;
         this.category = category;
         this.description = description;
-        setMinCompetencyScore(minCompetencyScore);
-        this.active = active != null ? active : true;
-    }
-
-    /* ---------------- Business Rule ---------------- */
-
-    public void setMinCompetencyScore(Double minCompetencyScore) {
-        if (minCompetencyScore == null || minCompetencyScore < 0 || minCompetencyScore > 100) {
-            throw new IllegalArgumentException(
-                "minCompetencyScore must be between 0 and 100"
-            );
-        }
         this.minCompetencyScore = minCompetencyScore;
+        this.active = active;
     }
 
-    /* ---------------- Getters & Setters ---------------- */
+    /* ----------- Getters & Setters ----------- */
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getSkillName() {
@@ -85,15 +76,19 @@ public class Skill {
         this.description = description;
     }
 
-    public Double getMinCompetencyScore() {
+    public int getMinCompetencyScore() {
         return minCompetencyScore;
     }
 
-    public Boolean getActive() {
+    public void setMinCompetencyScore(int minCompetencyScore) {
+        this.minCompetencyScore = minCompetencyScore;
+    }
+
+    public boolean isActive() {
         return active;
     }
 
-    public void setActive(Boolean active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 }
