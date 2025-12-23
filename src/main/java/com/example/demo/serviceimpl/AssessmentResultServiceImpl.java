@@ -5,12 +5,12 @@ import com.example.demo.repository.AssessmentResultRepository;
 
 import java.util.List;
 
-public class AssessmentServiceImpl {
+public class AssessmentResultServiceImpl {
 
     private final AssessmentResultRepository repository;
 
     // REQUIRED by test
-    public AssessmentServiceImpl(AssessmentResultRepository repository) {
+    public AssessmentResultServiceImpl(AssessmentResultRepository repository) {
         this.repository = repository;
     }
 

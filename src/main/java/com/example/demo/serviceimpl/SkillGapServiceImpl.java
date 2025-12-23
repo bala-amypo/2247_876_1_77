@@ -1,29 +1,28 @@
 package com.example.demo.serviceimpl;
 
-
 import com.example.demo.entity.SkillGapRecord;
 import com.example.demo.repository.SkillGapRecordRepository;
-import com.example.demo.service.SkillGapService;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class SkillGapServiceImpl implements SkillGapService {
+public class SkillGapServiceImpl {
 
     private final SkillGapRecordRepository skillGapRecordRepository;
 
+    // REQUIRED by test
     public SkillGapServiceImpl(SkillGapRecordRepository skillGapRecordRepository) {
         this.skillGapRecordRepository = skillGapRecordRepository;
     }
 
-    @Override
-    public SkillGapRecord createSkillGapRecord(SkillGapRecord record) {
+    public SkillGapRecord save(SkillGapRecord record) {
         return skillGapRecordRepository.save(record);
     }
 
-    @Override
-    public List<SkillGapRecord> getAllSkillGapRecords() {
+    public List<SkillGapRecord> findAll() {
         return skillGapRecordRepository.findAll();
+    }
+
+    public List<SkillGapRecord> findByStudentProfileId(Long studentProfileId) {
+        return skillGapRecordRepository.findByStudentProfileId(studentProfileId);
     }
 }
