@@ -7,22 +7,21 @@ import java.util.List;
 
 public class SkillGapServiceImpl {
 
-    private final SkillGapRecordRepository skillGapRecordRepository;
+    private final SkillGapRecordRepository repository;
 
-    // REQUIRED by test
-    public SkillGapServiceImpl(SkillGapRecordRepository skillGapRecordRepository) {
-        this.skillGapRecordRepository = skillGapRecordRepository;
+    public SkillGapServiceImpl(SkillGapRecordRepository repository) {
+        this.repository = repository;
     }
 
     public SkillGapRecord save(SkillGapRecord record) {
-        return skillGapRecordRepository.save(record);
+        return repository.save(record);
     }
 
     public List<SkillGapRecord> findAll() {
-        return skillGapRecordRepository.findAll();
+        return repository.findAll();
     }
 
     public List<SkillGapRecord> findByStudentProfileId(Long studentProfileId) {
-        return skillGapRecordRepository.findByStudentProfileId(studentProfileId);
+        return repository.findByStudentProfileId(studentProfileId);
     }
 }

@@ -9,7 +9,6 @@ public class UserServiceImpl {
 
     private final UserRepository userRepository;
 
-    // REQUIRED by test
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }

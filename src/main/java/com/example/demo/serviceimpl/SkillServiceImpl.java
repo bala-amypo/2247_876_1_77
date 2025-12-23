@@ -9,7 +9,6 @@ public class SkillServiceImpl {
 
     private final SkillRepository skillRepository;
 
-    // REQUIRED by test
     public SkillServiceImpl(SkillRepository skillRepository) {
         this.skillRepository = skillRepository;
     }

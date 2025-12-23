@@ -9,7 +9,6 @@ public class AssessmentResultServiceImpl {
 
     private final AssessmentResultRepository repository;
 
-    // REQUIRED by test
     public AssessmentResultServiceImpl(AssessmentResultRepository repository) {
         this.repository = repository;
     }
@@ -18,8 +17,8 @@ public class AssessmentResultServiceImpl {
         return repository.save(result);
     }
 
-    public List<AssessmentResult> findRecentByStudent(Long studentId) {
-        return repository.findRecentByStudent(studentId);
+    public List<AssessmentResult> findRecentByStudent(Long studentProfileId) {
+        return repository.findRecentByStudent(studentProfileId);
     }
 
     public AssessmentResult findByStudentAndSkill(Long studentId, Long skillId) {

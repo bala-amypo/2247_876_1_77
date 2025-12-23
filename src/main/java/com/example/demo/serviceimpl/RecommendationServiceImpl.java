@@ -11,11 +11,9 @@ public class RecommendationServiceImpl {
     private final SkillGapRecordRepository gapRepository;
     private final SkillGapRecommendationRepository recommendationRepository;
 
-    // REQUIRED by test (constructor order matters)
     public RecommendationServiceImpl(
             SkillGapRecordRepository gapRepository,
             SkillGapRecommendationRepository recommendationRepository) {
-
         this.gapRepository = gapRepository;
         this.recommendationRepository = recommendationRepository;
     }

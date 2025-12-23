@@ -7,20 +7,19 @@ public class StudentProfileServiceImpl {
 
     private final StudentProfileRepository repository;
 
-    // REQUIRED by test
     public StudentProfileServiceImpl(StudentProfileRepository repository) {
         this.repository = repository;
     }
 
-    public StudentProfile createOrUpdateProfile(StudentProfile profile) {
+    public StudentProfile save(StudentProfile profile) {
         return repository.save(profile);
     }
 
-    public StudentProfile getByUserId(Long userId) {
-        return repository.findByUserId(userId).orElse(null);
+    public StudentProfile findByEnrollmentId(String enrollmentId) {
+        return repository.findByEnrollmentId(enrollmentId).orElse(null);
     }
 
-    public StudentProfile getByEnrollmentId(String enrollmentId) {
-        return repository.findByEnrollmentId(enrollmentId).orElse(null);
+    public StudentProfile findByUserId(Long userId) {
+        return repository.findByUserId(userId).orElse(null);
     }
 }
