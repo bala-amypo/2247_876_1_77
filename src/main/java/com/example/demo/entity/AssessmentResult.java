@@ -1,79 +1,75 @@
 package com.example.demo.entity;
 
-import com.example.demo.entity.StudentProfile;
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
-@Table(name = "assessment_results")
 public class AssessmentResult {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /* ---------------- Relations ---------------- */
+    private Long studentProfileId;
+    private Long skillId;
+    private double score;
+    private String assessedAt;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "student_profile_id", nullable = false)
-    private StudentProfile studentProfile;
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "skill_id", nullable = false)
-    private Skill skill;
-
-    /* ---------------- Assessment Data ---------------- */
-
-    @Column(nullable = false)
-    private Double score;   // 0–100
-
-    @Column(nullable = false)
-    private LocalDateTime assessedAt;
-
-    /* ---------------- Constructors ---------------- */
+    /* ---------- Constructors ---------- */
 
     public AssessmentResult() {
-        this.assessedAt = LocalDateTime.now();
     }
 
-    /* ---------------- Getters & Setters ---------------- */
+    public AssessmentResult(Long id, Long studentProfileId, Long skillId,
+                            double score, String assessedAt) {
+        this.id = id;
+        this.studentProfileId = studentProfileId;
+        this.skillId = skillId;
+        this.score = score;
+        this.assessedAt = assessedAt;
+    }
+
+    /* ---------- Getters & Setters ---------- */
 
     public Long getId() {
         return id;
     }
 
-    public StudentProfile getStudentProfile() {
-        return studentProfile;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setStudentProfile(StudentProfile studentProfile) {
-        this.studentProfile = studentProfile;
+    public Long getStudentProfileId() {
+        return studentProfileId;
     }
 
-    public Skill getSkill() {
-        return skill;
+    public void setStudentProfileId(Long studentProfileId) {
+        this.studentProfileId = studentProfileId;
     }
 
-    public void setSkill(Skill skill) {
-        this.skill = skill;
+    public Long getSkillId() {
+        return skillId;
     }
 
-    public Double getScore() {
+    public void setSkillId(Long skillId) {
+        this.skillId = skillId;
+    }
+
+    public double getScore() {
         return score;
     }
 
-    public void setScore(Double score) {
-        if (score < 0 || score > 100) {
-            throw new IllegalArgumentException("Score must be between 0 and 100");
-        }
+    public void setScore(double score) {
         this.score = score;
     }
 
-    public LocalDateTime getAssessedAt() {
+    public String getAssessedAt() {
         return assessedAt;
     }
 
-    public void setAssessedAt(LocalDateTime assessedAt) {
+    public void setAssessedAt(String assessedAt) {
         this.assessedAt = assessedAt;
     }
 }
