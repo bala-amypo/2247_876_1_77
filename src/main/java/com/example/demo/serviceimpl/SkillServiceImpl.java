@@ -1,4 +1,4 @@
-package com.example.demo.serviceimpl;
+package com.example.demo.service.impl;
 
 import com.example.demo.entity.Skill;
 import com.example.demo.repository.SkillRepository;
@@ -18,37 +18,16 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public Skill createSkill(Skill skill) {
-
-        if (skillRepository.findBySkillName(skill.getSkillName()).isPresent()) {
-            throw new IllegalArgumentException("Skill already exists");
-        }
-
-        skill.setActive(true);
         return skillRepository.save(skill);
     }
 
     @Override
     public Skill getSkillById(Long id) {
-        return skillRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Skill not found"));
+        return skillRepository.findById(id).orElse(null);
     }
 
     @Override
     public List<Skill> getAllSkills() {
         return skillRepository.findAll();
-    }
-
-    @Override
-    public Skill activateSkill(Long id) {
-        Skill skill = getSkillById(id);
-        skill.setActive(true);
-        return skillRepository.save(skill);
-    }
-
-    @Override
-    public Skill deactivateSkill(Long id) {
-        Skill skill = getSkillById(id);
-        skill.setActive(false);
-        return skillRepository.save(skill);
     }
 }
