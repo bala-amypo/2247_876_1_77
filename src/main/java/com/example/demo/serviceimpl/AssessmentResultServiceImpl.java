@@ -1,4 +1,4 @@
-package com.example.demo.serviceimpl;
+package com.example.demo.service.impl;
 
 import com.example.demo.entity.AssessmentResult;
 import com.example.demo.repository.AssessmentResultRepository;
@@ -22,12 +22,7 @@ public class AssessmentResultServiceImpl implements AssessmentResultService {
     }
 
     @Override
-    public List<AssessmentResult> getResultsByStudent(Long studentProfileId) {
-        return assessmentResultRepository.findByStudentProfileId(studentProfileId);
-    }
-
-    @Override
-    public List<AssessmentResult> getResultsBySkill(Long skillId) {
-        return assessmentResultRepository.findBySkillId(skillId);
+    public List<AssessmentResult> getAllAssessmentResults() {
+        return assessmentResultRepository.findAll();
     }
 }
