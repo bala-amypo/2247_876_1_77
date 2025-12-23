@@ -9,5 +9,6 @@ public interface StudentProfileService {
 
     List<StudentProfile> getAll();
 
-    StudentProfile getByEnrollmentId(String enrollmentId); // 👈 REQUIRED
+    // 👈 REQUIRED by test / helper doc
+    StudentProfile getByEnrollmentId(String enrollmentId);
 }
