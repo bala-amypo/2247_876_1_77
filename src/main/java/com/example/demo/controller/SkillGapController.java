@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/gaps")
+@RequestMapping("/gaps")
 public class SkillGapController {
 
     private final SkillGapService skillGapService;
@@ -17,14 +17,18 @@ public class SkillGapController {
         this.skillGapService = skillGapService;
     }
 
-    @PostMapping("/compute/{studentId}")
-    public ResponseEntity<String> computeGaps(@PathVariable Long studentId) {
-        skillGapService.computeGaps(studentId);
-        return ResponseEntity.ok("Skill gaps computed");
+    @PostMapping
+    public ResponseEntity<SkillGapRecord> createGap(
+            @RequestBody SkillGapRecord record) {
+        return ResponseEntity.ok(
+                skillGapService.createSkillGapRecord(record)
+        );
     }
 
-    @GetMapping("/student/{studentId}")
-    public ResponseEntity<List<SkillGapRecord>> getGaps(@PathVariable Long studentId) {
-        return ResponseEntity.ok(skillGapService.getGapsByStudent(studentId));
+    @GetMapping
+    public ResponseEntity<List<SkillGapRecord>> getAllGaps() {
+        return ResponseEntity.ok(
+                skillGapService.getAllSkillGapRecords()
+        );
     }
 }

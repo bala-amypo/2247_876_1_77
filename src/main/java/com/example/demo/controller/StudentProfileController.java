@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/students")
+@RequestMapping("/students")
 public class StudentProfileController {
 
     private final StudentProfileService service;
@@ -20,17 +20,17 @@ public class StudentProfileController {
     @PostMapping
     public ResponseEntity<StudentProfile> createProfile(
             @RequestBody StudentProfile profile) {
-
         return ResponseEntity.ok(service.createProfile(profile));
     }
 
+    @GetMapping
+    public ResponseEntity<List<StudentProfile>> getAllProfiles() {
+        return ResponseEntity.ok(service.getAll());
+    }
+
     @GetMapping("/enrollment/{enrollmentId}")
-     public ResponseEntity<StudentProfile> getByEnrollment(
-        @PathVariable String enrollmentId) {
-
-    return ResponseEntity.ok(
-            service.getByEnrollmentId(enrollmentId)
-    );
-}
-
+    public ResponseEntity<StudentProfile> getByEnrollment(
+            @PathVariable String enrollmentId) {
+        return ResponseEntity.ok(service.getByEnrollmentId(enrollmentId));
+    }
 }
