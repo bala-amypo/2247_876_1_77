@@ -38,12 +38,7 @@
         <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
 
-	<dependency>
-    <groupId>org.projectlombok</groupId>
-    <artifactId>lombok</artifactId>
-    <scope>provided</scope>
-</dependency>
-
+	
 
     <!-- Spring Data JPA -->
     <dependency>
