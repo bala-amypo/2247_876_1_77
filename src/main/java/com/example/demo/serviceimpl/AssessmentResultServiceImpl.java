@@ -5,21 +5,19 @@ import com.example.demo.repository.AssessmentResultRepository;
 
 import java.util.List;
 
-public class AssessmentServiceImpl {
+public class AssessmentResultServiceImpl {
 
     private final AssessmentResultRepository repository;
 
-    // REQUIRED constructor (tests use new)
-    public AssessmentServiceImpl(AssessmentResultRepository repository) {
+    // Constructor used by tests
+    public AssessmentResultServiceImpl(AssessmentResultRepository repository) {
         this.repository = repository;
     }
 
-    // REQUIRED by controller & tests
     public AssessmentResult save(AssessmentResult result) {
         return repository.save(result);
     }
 
-    // REQUIRED by tests
     public List<AssessmentResult> findRecentByStudent(Long studentProfileId) {
         return repository.findRecentByStudent(studentProfileId);
     }
