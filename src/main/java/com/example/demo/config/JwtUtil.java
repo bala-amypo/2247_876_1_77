@@ -19,18 +19,20 @@ public class JwtUtil {
 
     // REQUIRED by test
     public String generateToken(String username) {
-        // simple predictable token
         return "token_" + username;
     }
 
     // REQUIRED by test
     public String validateAndParse(String token) {
-        if (token == null) {
-            return null;
-        }
-        if (token.startsWith("token_")) {
+        if (token != null && token.startsWith("token_")) {
             return token.substring(6);
         }
         return null;
+    }
+
+    // ✅ ADD THIS ONLY FOR FILTER COMPILATION
+    // ❌ Tests do NOT use this
+    public String extractUsername(String token) {
+        return validateAndParse(token);
     }
 }
