@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class StudentProfileServiceImpl implements StudentProfileService {
+public class StudentProfileServiceImpl extends StudentProfileService {
 
     private final StudentProfileRepository repository;
 
