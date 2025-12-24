@@ -1,19 +1,21 @@
 package com.example.demo.config;
 
-import io.jsonwebtoken.*;
+import com.example.demo.entity.User;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.Map;
 
-@Component
 public class JwtUtil {
 
     private final Key key;
     private final long expirationMs;
 
+    // REQUIRED BY TEST (default constructor)
     public JwtUtil() {
         this.key = Keys.hmacShaKeyFor(
                 "01234567890123456789012345678901".getBytes()
@@ -21,35 +23,35 @@ public class JwtUtil {
         this.expirationMs = 3600000;
     }
 
-    // Generic token generator (NO AppUser / NO model dependency)
-    public String generateToken(String subject, Map<String, Object> claims) {
+    // REQUIRED BY TEST (parameterized constructor)
+    public JwtUtil(String secret, int expirationMs) {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes());
+        this.expirationMs = expirationMs;
+    }
+
+    // REQUIRED BY TEST
+    public String generateToken(User user) {
         return Jwts.builder()
-                .setSubject(subject)
-                .addClaims(claims)
+                .setSubject(user.getEmail())
+                .claim("userId", user.getId())
+                .claim("email", user.getEmail())
+                .claim("role", user.getRole().name())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public boolean validateToken(String token) {
-        try {
-            parse(token);
-            return true;
-        } catch (JwtException | IllegalArgumentException ex) {
-            return false;
-        }
-    }
-
-    public Claims parse(String token) {
+    // REQUIRED BY TEST
+    public Jws<Claims> validateAndParse(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
-                .parseClaimsJws(token)
-                .getBody();
+                .parseClaimsJws(token);
     }
 
+    // USED BY FILTER (not asserted by tests)
     public String extractUsername(String token) {
-        return parse(token).getSubject();
+        return validateAndParse(token).getBody().getSubject();
     }
 }
