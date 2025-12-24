@@ -1,26 +1,28 @@
 package com.example.demo.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import com.example.demo.entity.Role;
+import com.example.demo.entity.User;
 
 public class RegisterRequest {
 
-    @NotBlank
     private String fullName;
-
-    @NotBlank
-    @Email
     private String email;
-
-    @NotBlank
     private String password;
+    private User.Role role;
 
-    private Role role;
+    public RegisterRequest() {
+    }
+
+    public RegisterRequest(String fullName, String email, String password, User.Role role) {
+        this.fullName = fullName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
 
     public String getFullName() {
         return fullName;
     }
+
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
@@ -28,6 +30,7 @@ public class RegisterRequest {
     public String getEmail() {
         return email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -35,14 +38,16 @@ public class RegisterRequest {
     public String getPassword() {
         return password;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public Role getRole() {
+    public User.Role getRole() {
         return role;
     }
-    public void setRole(Role role) {
+
+    public void setRole(User.Role role) {
         this.role = role;
     }
 }

@@ -1,30 +1,31 @@
 package com.example.demo.dto;
 
-public class RecommendationDTO {
+public class RecommendationRequest {
 
-    private Long studentId;
-    private String recommendation;
+    private Long studentProfileId;
+    private Long skillId;
 
-    public RecommendationDTO() {}
-
-    public RecommendationDTO(Long studentId, String recommendation) {
-        this.studentId = studentId;
-        this.recommendation = recommendation;
+    public RecommendationRequest() {
     }
 
-    public Long getStudentId() {
-        return studentId;
+    public RecommendationRequest(Long studentProfileId, Long skillId) {
+        this.studentProfileId = studentProfileId;
+        this.skillId = skillId;
     }
 
-    public void setStudentId(Long studentId) {
-        this.studentId = studentId;
+    public Long getStudentProfileId() {
+        return studentProfileId;
     }
 
-    public String getRecommendation() {
-        return recommendation;
+    public void setStudentProfileId(Long studentProfileId) {
+        this.studentProfileId = studentProfileId;
     }
 
-    public void setRecommendation(String recommendation) {
-        this.recommendation = recommendation;
+    public Long getSkillId() {
+        return skillId;
+    }
+
+    public void setSkillId(Long skillId) {
+        this.skillId = skillId;
     }
 }
