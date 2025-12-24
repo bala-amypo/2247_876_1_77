@@ -8,9 +8,7 @@ import java.util.Optional;
 
 public interface SkillRepository extends JpaRepository<Skill, Long> {
 
-    // REQUIRED by tests
     Optional<Skill> findByCode(String code);
 
-    // REQUIRED by tests
     List<Skill> findByActiveTrue();
 }
