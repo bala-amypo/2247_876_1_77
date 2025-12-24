@@ -5,7 +5,7 @@ public class RecommendationRequest {
     private Long studentProfileId;
     private Long skillId;
 
-    public RecommendationRequest() {
+    public RecommendationDTO() {
     }
 
     public RecommendationRequest(Long studentProfileId, Long skillId) {
