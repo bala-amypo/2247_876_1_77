@@ -30,7 +30,3 @@ public class AssessmentServiceImpl implements AssessmentService {
         return repository.save(result);
     }
 }
-@Component
-public class AssessmentServiceImpl implements AssessmentService {
-    // empty implementation
-}
