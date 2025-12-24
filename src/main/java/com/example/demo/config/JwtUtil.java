@@ -1,38 +1,54 @@
 package com.example.demo.config;
 
+import com.example.demo.entity.User;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
+
+import java.security.Key;
+import java.util.Date;
+
 public class JwtUtil {
 
-    private final String secret;
-    private final int expiry;
+    private final Key key;
+    private final long expirationMs;
 
-    // REQUIRED by test
+    // REQUIRED BY TEST
     public JwtUtil() {
-        this.secret = "secret";
-        this.expiry = 3600;
+        this.key = Keys.hmacShaKeyFor(
+                "01234567890123456789012345678901".getBytes()
+        );
+        this.expirationMs = 3600000;
     }
 
-    // REQUIRED by test
-    public JwtUtil(String secret, int expiry) {
-        this.secret = secret;
-        this.expiry = expiry;
+    // REQUIRED BY TEST
+    public JwtUtil(String secret, int expirationMs) {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes());
+        this.expirationMs = expirationMs;
     }
 
-    // REQUIRED by test
-    public String generateToken(String username) {
-        return "token_" + username;
+    // REQUIRED BY TEST
+    public String generateToken(User user) {
+        return Jwts.builder()
+                .setSubject(user.getEmail())
+                .claim("userId", user.getId())
+                .claim("email", user.getEmail())
+                .claim("role", user.getRole().name())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
     }
 
-    // REQUIRED by test
-    public String validateAndParse(String token) {
-        if (token != null && token.startsWith("token_")) {
-            return token.substring(6);
-        }
-        return null;
+    // REQUIRED BY TEST
+    public Jws<Claims> validateAndParse(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token);
     }
 
-    // ✅ ADD THIS ONLY FOR FILTER COMPILATION
-    // ❌ Tests do NOT use this
+    // USED ONLY BY FILTER
     public String extractUsername(String token) {
-        return validateAndParse(token);
+        return validateAndParse(token).getBody().getSubject();
     }
 }

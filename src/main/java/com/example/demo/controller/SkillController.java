@@ -1,28 +1,38 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Skill;
-import com.example.demo.serviceimpl.SkillServiceImpl;
+import com.example.demo.service.SkillService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/skills")
+@RequestMapping("/api/skills")
 public class SkillController {
 
-    private final SkillServiceImpl service;
+    private final SkillService service;
 
-    public SkillController(SkillServiceImpl service) {
+    public SkillController(SkillService service) {
         this.service = service;
     }
 
     @PostMapping
-    public Skill save(@RequestBody Skill skill) {
-        return service.save(skill);
+    public Skill create(@RequestBody Skill skill) {
+        return service.createSkill(skill);
     }
 
-    @GetMapping
-    public List<Skill> findAll() {
-        return service.findAll();
+    @PutMapping("/{id}")
+    public Skill update(@PathVariable Long id, @RequestBody Skill skill) {
+        return service.updateSkill(id, skill);
+    }
+
+    @GetMapping("/{id}")
+    public Skill getById(@PathVariable Long id) {
+        return service.getById(id);
+    }
+
+    @GetMapping("/active")
+    public List<Skill> active() {
+        return service.getActiveSkills();
     }
 }

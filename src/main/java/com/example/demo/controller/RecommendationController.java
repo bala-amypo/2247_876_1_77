@@ -1,23 +1,33 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.SkillGapRecommendation;
-import com.example.demo.serviceimpl.RecommendationServiceImpl;
+import com.example.demo.service.RecommendationService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/recommendations")
+@RequestMapping("/api/recommendations")
 public class RecommendationController {
 
-    private final RecommendationServiceImpl service;
+    private final RecommendationService service;
 
-    public RecommendationController(RecommendationServiceImpl service) {
+    public RecommendationController(RecommendationService service) {
         this.service = service;
     }
 
-    @GetMapping
-    public List<SkillGapRecommendation> findAll() {
-        return service.findAll();
+    @PostMapping("/{studentId}/{skillId}")
+    public SkillGapRecommendation computeOne(
+            @PathVariable Long studentId,
+            @PathVariable Long skillId) {
+
+        return service.computeRecommendationForStudentSkill(studentId, skillId);
+    }
+
+    @GetMapping("/{studentId}")
+    public List<SkillGapRecommendation> getForStudent(
+            @PathVariable Long studentId) {
+
+        return service.getRecommendationsForStudent(studentId);
     }
 }
