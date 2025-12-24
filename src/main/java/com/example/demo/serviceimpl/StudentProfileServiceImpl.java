@@ -2,8 +2,9 @@ package com.example.demo.serviceimpl;
 
 import com.example.demo.entity.StudentProfile;
 import com.example.demo.repository.StudentProfileRepository;
+import com.example.demo.service.StudentProfileService;
 
-public class StudentProfileServiceImpl {
+public class StudentProfileServiceImpl implements StudentProfileService {
 
     private final StudentProfileRepository repository;
 
@@ -11,15 +12,14 @@ public class StudentProfileServiceImpl {
         this.repository = repository;
     }
 
-    public StudentProfile save(StudentProfile profile) {
+    @Override
+    public StudentProfile createOrUpdateProfile(StudentProfile profile) {
         return repository.save(profile);
     }
 
-    public StudentProfile findByEnrollmentId(String enrollmentId) {
-        return repository.findByEnrollmentId(enrollmentId).orElse(null);
-    }
-
-    public StudentProfile findByUserId(Long userId) {
-        return repository.findByUserId(userId).orElse(null);
+    @Override
+    public StudentProfile getByUserId(Long userId) {
+        return repository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Profile not found"));
     }
 }
