@@ -1,27 +1,37 @@
-package com.example.demo.serviceimpl;
+package com.example.demo.entity;
 
-import com.example.demo.entity.AssessmentResult;
-import com.example.demo.repository.AssessmentResultRepository;
+import jakarta.persistence.*;
+import lombok.*;
 
-import java.util.List;
+import java.time.Instant;
 
-public class AssessmentResultServiceImpl {
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class AssessmentResult {
 
-    private final AssessmentResultRepository repository;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public AssessmentResultServiceImpl(AssessmentResultRepository repository) {
-        this.repository = repository;
-    }
+    private String assessmentId;
 
-    public AssessmentResult save(AssessmentResult result) {
-        return repository.save(result);
-    }
+    @ManyToOne
+    @JoinColumn(name = "student_profile_id")
+    private StudentProfile studentProfile;
 
-    public List<AssessmentResult> findByStudent(Long studentProfileId) {
-        return repository.findByStudentProfileId(studentProfileId);
-    }
+    @ManyToOne
+    @JoinColumn(name = "skill_id")
+    private Skill skill;
 
-    public List<AssessmentResult> findBySkill(Long skillId) {
-        return repository.findBySkillId(skillId);
-    }
+    private Double score;
+
+    @Builder.Default
+    private Double maxScore = 100.0;
+
+    @Builder.Default
+    private Instant attemptedAt = Instant.now();
 }
