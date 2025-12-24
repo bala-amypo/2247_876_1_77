@@ -5,9 +5,11 @@ import java.util.List;
 
 public interface UserService {
 
-    User createUser(User user);
+    User register(User user);
 
-    User getUserById(Long id);
+    User findByEmail(String email);
 
-    List<User> getAllUsers();
+    User getById(Long id);
+
+    List<User> listInstructors();
 }
