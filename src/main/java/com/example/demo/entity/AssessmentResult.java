@@ -1,72 +1,37 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.Instant;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class AssessmentResult {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long studentProfileId;
-    private Long skillId;
-    private double score;
-    private String assessedAt;
+    private String assessmentId;
 
-    /* ---------- Constructors ---------- */
+    @ManyToOne
+    @JoinColumn(name = "student_profile_id")
+    private StudentProfile studentProfile;
 
-    public AssessmentResult() {
-    }
+    @ManyToOne
+    @JoinColumn(name = "skill_id")
+    private Skill skill;
 
-    public AssessmentResult(Long id, Long studentProfileId, Long skillId,
-                            double score, String assessedAt) {
-        this.id = id;
-        this.studentProfileId = studentProfileId;
-        this.skillId = skillId;
-        this.score = score;
-        this.assessedAt = assessedAt;
-    }
+    private Double score;
 
-    /* ---------- Getters & Setters ---------- */
+    @Builder.Default
+    private Double maxScore = 100.0;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getStudentProfileId() {
-        return studentProfileId;
-    }
-
-    public void setStudentProfileId(Long studentProfileId) {
-        this.studentProfileId = studentProfileId;
-    }
-
-    public Long getSkillId() {
-        return skillId;
-    }
-
-    public void setSkillId(Long skillId) {
-        this.skillId = skillId;
-    }
-
-    public double getScore() {
-        return score;
-    }
-
-    public void setScore(double score) {
-        this.score = score;
-    }
-
-    public String getAssessedAt() {
-        return assessedAt;
-    }
-
-    public void setAssessedAt(String assessedAt) {
-        this.assessedAt = assessedAt;
-    }
+    @Builder.Default
+    private Instant attemptedAt = Instant.now();
 }
