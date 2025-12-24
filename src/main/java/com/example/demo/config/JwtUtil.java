@@ -1,20 +1,19 @@
 package com.example.demo.config;
 
-import com.example.demo.model.AppUser;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.Map;
 
-@Component   // ✅ MAKES IT A SPRING BEAN
+@Component
 public class JwtUtil {
 
     private final Key key;
     private final long expirationMs;
 
-    // REQUIRED BY TEST / DEFAULT
     public JwtUtil() {
         this.key = Keys.hmacShaKeyFor(
                 "01234567890123456789012345678901".getBytes()
@@ -22,35 +21,35 @@ public class JwtUtil {
         this.expirationMs = 3600000;
     }
 
-    // OPTIONAL CONSTRUCTOR
-    public JwtUtil(String secret, int expirationMs) {
-        this.key = Keys.hmacShaKeyFor(secret.getBytes());
-        this.expirationMs = expirationMs;
-    }
-
-    // REQUIRED BY TEST
-    public String generateToken(AppUser user) {
+    // Generic token generator (NO AppUser / NO model dependency)
+    public String generateToken(String subject, Map<String, Object> claims) {
         return Jwts.builder()
-                .setSubject(user.getEmail())
-                .claim("userId", user.getId())
-                .claim("email", user.getEmail())
-                .claim("role", user.getRole().name())
+                .setSubject(subject)
+                .addClaims(claims)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    // REQUIRED BY TEST
-    public Jws<Claims> validateAndParse(String token) {
+    public boolean validateToken(String token) {
+        try {
+            parse(token);
+            return true;
+        } catch (JwtException | IllegalArgumentException ex) {
+            return false;
+        }
+    }
+
+    public Claims parse(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
-                .parseClaimsJws(token);
+                .parseClaimsJws(token)
+                .getBody();
     }
 
-    // USED BY FILTER
     public String extractUsername(String token) {
-        return validateAndParse(token).getBody().getSubject();
+        return parse(token).getSubject();
     }
 }
