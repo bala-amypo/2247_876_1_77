@@ -1,34 +1,37 @@
 package com.example.demo.serviceimpl;
 
-import com.example.demo.entity.User;
-import com.example.demo.repository.UserRepository;
-import com.example.demo.service.UserService;
+import com.example.demo.entity.Skill;
+import com.example.demo.repository.SkillRepository;
+import com.example.demo.service.SkillService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class SkillServiceImpl implements SkillService {
 
-    private final UserRepository repository;
+    private final SkillRepository repository;
 
-    public UserServiceImpl(UserRepository repository) {
+    public SkillServiceImpl(SkillRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public User createUser(User user) {
-        return repository.save(user);
+    public Skill createSkill(Skill skill) {
+        if (repository.findByCode(skill.getCode()).isPresent()) {
+            throw new IllegalArgumentException("Skill code must be unique");
+        }
+        return repository.save(skill);
     }
 
     @Override
-    public User getUserById(Long id) {
+    public Skill getById(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("Skill not found"));
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return repository.findAll();
+    public List<Skill> getActiveSkills() {
+        return repository.findByActiveTrue();
     }
 }

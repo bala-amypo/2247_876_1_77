@@ -18,17 +18,20 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public Skill createSkill(Skill skill) {
+        if (repository.findByCode(skill.getCode()).isPresent()) {
+            throw new IllegalArgumentException("Skill code must be unique");
+        }
         return repository.save(skill);
     }
 
     @Override
-    public Skill getSkillById(Long id) {
+    public Skill getById(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Skill not found"));
     }
 
     @Override
-    public List<Skill> getAllSkills() {
-        return repository.findAll();
+    public List<Skill> getActiveSkills() {
+        return repository.findByActiveTrue();
     }
 }

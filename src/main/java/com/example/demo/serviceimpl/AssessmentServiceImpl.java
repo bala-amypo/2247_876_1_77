@@ -5,8 +5,6 @@ import com.example.demo.repository.AssessmentResultRepository;
 import com.example.demo.service.AssessmentService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class AssessmentServiceImpl implements AssessmentService {
 
@@ -17,12 +15,20 @@ public class AssessmentServiceImpl implements AssessmentService {
     }
 
     @Override
-    public AssessmentResult createAssessmentResult(AssessmentResult assessmentResult) {
-        return repository.save(assessmentResult);
-    }
+    public AssessmentResult recordAssessment(AssessmentResult result) {
 
-    @Override
-    public List<AssessmentResult> getAllAssessmentResults() {
-        return repository.findAll();
+        if (result.getScore() == null) {
+            throw new IllegalArgumentException("Score is required");
+        }
+
+        if (result.getMaxScore() == null) {
+            result.setMaxScore(100.0);
+        }
+
+        if (result.getScore() < 0 || result.getScore() > result.getMaxScore()) {
+            throw new IllegalArgumentException("Score must be between 0 and max score");
+        }
+
+        return repository.save(result);
     }
 }
