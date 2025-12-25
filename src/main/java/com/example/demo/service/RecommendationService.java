@@ -25,12 +25,13 @@ import java.util.List;
 
 public interface RecommendationService {
 
+    SkillGapRecommendation createRecommendation(SkillGapRecommendation recommendation);
+
+    List<SkillGapRecommendation> getAllRecommendations();
+
     List<SkillGapRecommendation> getRecommendationsForStudent(Long studentId);
 
     void computeRecommendationsForStudent(Long studentId);
 
-    // 🔥 MUST RETURN SkillGapRecommendation
-    SkillGapRecommendation computeRecommendationForStudentSkill(
-            Long studentId, Long skillId
-    );
+    SkillGapRecommendation computeRecommendationForStudentSkill(Long studentId, Long skillId);
 }
