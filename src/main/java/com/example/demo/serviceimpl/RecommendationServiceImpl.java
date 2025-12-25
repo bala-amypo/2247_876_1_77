@@ -35,7 +35,7 @@ public class RecommendationServiceImpl implements RecommendationService {
         this.skillRepository = skillRepository;
     }
 
-    // ================= TEST METHODS (NO @Override) =================
+    // ===== TEST-ONLY METHODS (NO @Override) =====
 
     public SkillGapRecommendation computeRecommendationForStudentSkill(
             Long studentId,
@@ -77,10 +77,10 @@ public class RecommendationServiceImpl implements RecommendationService {
                 .orElseThrow(() -> new RuntimeException("Profile not found"));
 
         List<Skill> skills = skillRepository.findByActiveTrue();
-        List<SkillGapRecommendation> result = new ArrayList<>();
+        List<SkillGapRecommendation> list = new ArrayList<>();
 
         for (Skill skill : skills) {
-            result.add(
+            list.add(
                     computeRecommendationForStudentSkill(
                             profile.getId(),
                             skill.getId()
@@ -88,26 +88,22 @@ public class RecommendationServiceImpl implements RecommendationService {
             );
         }
 
-        return result;
+        return list;
     }
 
-    public List<SkillGapRecommendation> getRecommendationsForStudent(
-            Long studentId
-    ) {
+    public List<SkillGapRecommendation> getRecommendationsForStudent(Long studentId) {
         return recommendationRepository
                 .findByStudentProfileIdOrderByGeneratedAtDesc(studentId);
     }
 
-    // ================= INTERFACE METHODS =================
+    // ===== INTERFACE METHODS (NO ERROR) =====
 
-    @Override
     public SkillGapRecommendation createRecommendation(
             SkillGapRecommendation recommendation
     ) {
         return recommendationRepository.save(recommendation);
     }
 
-    @Override
     public List<SkillGapRecommendation> getAllRecommendations() {
         return recommendationRepository.findAll();
     }
