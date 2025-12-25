@@ -1,19 +1,23 @@
 package com.example.demo.config;
 
 import com.example.demo.entity.User;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
 
-@Component   // ⭐ THIS FIXES THE ERROR
+@Component   // ⭐ THIS IS THE IMPORTANT FIX
 public class JwtUtil {
 
     private final Key key;
     private final long expirationMs;
 
+    // REQUIRED BY TESTS
     public JwtUtil() {
         this.key = Keys.hmacShaKeyFor(
                 "01234567890123456789012345678901".getBytes()
@@ -21,6 +25,7 @@ public class JwtUtil {
         this.expirationMs = 3600000;
     }
 
+    // REQUIRED BY TESTS
     public JwtUtil(String secret, int expirationMs) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
         this.expirationMs = expirationMs;
@@ -45,6 +50,7 @@ public class JwtUtil {
                 .parseClaimsJws(token);
     }
 
+    // Used by JwtAuthenticationFilter
     public String extractUsername(String token) {
         return validateAndParse(token).getBody().getSubject();
     }
