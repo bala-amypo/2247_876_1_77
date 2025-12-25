@@ -1,37 +1,47 @@
 package com.example.demo.serviceimpl;
 
-import com.example.demo.entity.Skill;
-import com.example.demo.repository.SkillRepository;
-import com.example.demo.service.SkillService;
+import com.example.demo.entity.User;
+import com.example.demo.repository.UserRepository;
+import com.example.demo.service.UserService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class SkillServiceImpl implements SkillService {
+public class UserServiceImpl implements UserService {
 
-    private final SkillRepository repository;
+    private final UserRepository repository;
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public SkillServiceImpl(SkillRepository repository) {
+    public UserServiceImpl(UserRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public Skill createSkill(Skill skill) {
-        if (repository.findByCode(skill.getCode()).isPresent()) {
-            throw new IllegalArgumentException("Skill code must be unique");
+    public User register(User user) {
+
+        if (repository.existsByEmail(user.getEmail())) {
+            throw new IllegalArgumentException("Email already exists");
         }
-        return repository.save(skill);
+
+        user.setPassword(encoder.encode(user.getPassword()));
+        return repository.save(user);
     }
 
     @Override
-    public Skill getById(Long id) {
+    public User getById(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Skill not found"));
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     @Override
-    public List<Skill> getActiveSkills() {
-        return repository.findByActiveTrue();
+    public User findByEmail(String email) {
+        return repository.findByEmail(email).orElse(null);
+    }
+
+    @Override
+    public List<User> listInstructors() {
+        return repository.findByRole(User.Role.INSTRUCTOR);
     }
 }
