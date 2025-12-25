@@ -18,7 +18,6 @@
 //             Long studentProfileId
 //     );
 // }
-
 package com.example.demo.service;
 
 import com.example.demo.entity.SkillGapRecommendation;
@@ -28,6 +27,8 @@ public interface RecommendationService {
 
     List<SkillGapRecommendation> getRecommendationsForStudent(Long studentId);
 
-    // REQUIRED by compiler & tests
     void computeRecommendationsForStudent(Long studentId);
+
+    // 🔴 REQUIRED by RecommendationController
+    void computeRecommendationForStudentSkill(Long studentId, Long skillId);
 }

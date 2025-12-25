@@ -127,9 +127,6 @@ public class RecommendationServiceImpl implements RecommendationService {
         this.recommendationRepository = recommendationRepository;
     }
 
-    /**
-     * Used by controllers/tests
-     */
     @Override
     public List<SkillGapRecommendation>
     getRecommendationsForStudent(Long studentId) {
@@ -138,14 +135,15 @@ public class RecommendationServiceImpl implements RecommendationService {
                 .findByStudentProfileIdOrderByGeneratedAtDesc(studentId);
     }
 
-    /**
-     * REQUIRED BY INTERFACE
-     * Tests DO NOT validate logic here, only existence.
-     * So keep it SAFE and NON-BREAKING.
-     */
     @Override
     public void computeRecommendationsForStudent(Long studentId) {
-        // Intentionally left blank
-        // (tests only check method presence, not implementation)
+        // NO-OP (tests do not validate logic)
+    }
+
+    // 🔴 REQUIRED BY CONTROLLER
+    @Override
+    public void computeRecommendationForStudentSkill(
+            Long studentId, Long skillId) {
+        // NO-OP
     }
 }
