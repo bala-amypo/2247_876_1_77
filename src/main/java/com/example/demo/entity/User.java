@@ -22,4 +22,11 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    // ✅ NESTED ENUM — THIS IS THE KEY FIX
+    public enum Role {
+        ADMIN,
+        INSTRUCTOR,
+        STUDENT
+    }
 }
