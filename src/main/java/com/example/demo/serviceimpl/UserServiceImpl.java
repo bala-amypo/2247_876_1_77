@@ -17,28 +17,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User register(User user) {
+    public User createUser(User user) {
         return repository.save(user);
     }
 
     @Override
-    public User getById(Long id) {
+    public User getUserById(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     @Override
-    public List<User> getAll() {
+    public List<User> getAllUsers() {
         return repository.findAll();
-    }
-
-    @Override
-    public User findByEmail(String email) {
-        return repository.findByEmail(email).orElse(null);
-    }
-
-    @Override
-    public List<User> listInstructors() {
-        return repository.findByRole(User.Role.INSTRUCTOR);
     }
 }

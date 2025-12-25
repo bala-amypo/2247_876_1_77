@@ -17,12 +17,12 @@ public class AssessmentServiceImpl implements AssessmentService {
     }
 
     @Override
-    public AssessmentResult recordAssessment(AssessmentResult result) {
-        return repository.save(result);
+    public AssessmentResult createAssessmentResult(AssessmentResult assessmentResult) {
+        return repository.save(assessmentResult);
     }
 
     @Override
-    public List<AssessmentResult> getAll() {
+    public List<AssessmentResult> getAllAssessmentResults() {
         return repository.findAll();
     }
 }
