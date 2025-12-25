@@ -21,8 +21,10 @@ public class StudentProfile {
     private String grade;
     private String cohort;
 
+    @Builder.Default
     private boolean active = true;
 
+    @Builder.Default
     private Instant lastUpdatedAt = Instant.now();
 
     @PreUpdate
