@@ -12,12 +12,6 @@ import lombok.*;
 @Builder
 public class User {
 
-    public enum Role {
-        ADMIN,
-        INSTRUCTOR,
-        STUDENT
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

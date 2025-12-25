@@ -23,15 +23,9 @@ public class SkillGapRecommendation {
     @ManyToOne
     private Skill skill;
 
+    private double gapScore;
     private String recommendedAction;
     private String priority;
-
-    @Builder.Default
-    private double gapScore = 0.0;
-
-    @Builder.Default
-    private String generatedBy = "SYSTEM";
-
-    @Builder.Default
-    private Instant generatedAt = Instant.now();
+    private String generatedBy;
+    private Instant generatedAt;
 }

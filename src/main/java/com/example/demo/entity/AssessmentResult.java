@@ -18,20 +18,13 @@ public class AssessmentResult {
     private Long id;
 
     private String assessmentId;
+    private Double score;
+    private Double maxScore = 100.0;
+    private Instant attemptedAt = Instant.now();
 
     @ManyToOne
-    @JoinColumn(name = "student_profile_id")
     private StudentProfile studentProfile;
 
     @ManyToOne
-    @JoinColumn(name = "skill_id")
     private Skill skill;
-
-    private Double score;
-
-    @Builder.Default
-    private Double maxScore = 100.0;
-
-    @Builder.Default
-    private Instant attemptedAt = Instant.now();
 }

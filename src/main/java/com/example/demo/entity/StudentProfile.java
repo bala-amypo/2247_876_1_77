@@ -18,16 +18,11 @@ public class StudentProfile {
     private Long id;
 
     private String enrollmentId;
-
-    // TEST USES grade, NOT yearLevel
     private String grade;
-
     private String cohort;
 
-    @Builder.Default
     private boolean active = true;
 
-    @Builder.Default
     private Instant lastUpdatedAt = Instant.now();
 
     @PreUpdate

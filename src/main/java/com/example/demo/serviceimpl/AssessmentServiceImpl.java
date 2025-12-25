@@ -1,10 +1,3 @@
-package com.example.demo.serviceimpl;
-
-import com.example.demo.entity.AssessmentResult;
-import com.example.demo.repository.AssessmentResultRepository;
-import com.example.demo.service.AssessmentService;
-import org.springframework.stereotype.Service;
-
 @Service
 public class AssessmentServiceImpl implements AssessmentService {
 
@@ -18,7 +11,7 @@ public class AssessmentServiceImpl implements AssessmentService {
     public AssessmentResult recordAssessment(AssessmentResult result) {
 
         if (result.getScore() == null) {
-            throw new IllegalArgumentException("Score is required");
+            throw new IllegalArgumentException("Score required");
         }
 
         if (result.getMaxScore() == null) {
@@ -26,7 +19,7 @@ public class AssessmentServiceImpl implements AssessmentService {
         }
 
         if (result.getScore() < 0 || result.getScore() > result.getMaxScore()) {
-            throw new IllegalArgumentException("Score must be between 0 and max score");
+            throw new IllegalArgumentException("Score invalid");
         }
 
         return repository.save(result);
