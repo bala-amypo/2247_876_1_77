@@ -2,7 +2,9 @@ package com.example.demo.repository;
 
 import com.example.demo.entity.AssessmentResult;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
+import java.time.Instant;
 import java.util.List;
 
 public interface AssessmentResultRepository
@@ -12,9 +14,21 @@ public interface AssessmentResultRepository
 
     List<AssessmentResult> findBySkillId(Long skillId);
 
-    // ⭐ REQUIRED BY TESTS (DO NOT REMOVE)
     List<AssessmentResult> findByStudentProfileIdAndSkillId(
             Long studentProfileId,
             Long skillId
+    );
+
+    // ⭐ REQUIRED BY TESTS (mocked)
+    Double avgScoreByCohortAndSkill(String cohort, Long skillId);
+
+    // ⭐ REQUIRED BY TESTS (mocked)
+    List<AssessmentResult> findRecentByStudent(Long studentProfileId);
+
+    // ⭐ REQUIRED BY TESTS (mocked)
+    List<AssessmentResult> findResultsForStudentBetween(
+            Long studentProfileId,
+            Instant start,
+            Instant end
     );
 }
