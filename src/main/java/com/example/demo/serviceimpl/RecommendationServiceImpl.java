@@ -33,7 +33,7 @@ public class RecommendationServiceImpl implements RecommendationService {
     public SkillGapRecommendation computeRecommendationForStudentSkill(Long studentId, Long skillId) {
 
         StudentProfile profile = profileRepo.findById(studentId)
-                .orElseThrow(() -> new RuntimeException("Student not found"));
+                .orElseThrow(() -> new RuntimeException("Profile not found"));
 
         Skill skill = skillRepo.findById(skillId)
                 .orElseThrow(() -> new RuntimeException("Skill not found"));
@@ -41,22 +41,16 @@ public class RecommendationServiceImpl implements RecommendationService {
         List<AssessmentResult> results =
                 assessmentRepo.findByStudentProfileIdAndSkillId(studentId, skillId);
 
-        double avgScore = results.stream()
-                .mapToDouble(AssessmentResult::getScore)
-                .average()
-                .orElse(0.0);
+        double gap = results.isEmpty()
+                ? 100
+                : 100 - results.get(results.size() - 1).getScore();
 
-        double gap = Math.max(0, skill.getMinCompetencyScore() - avgScore);
-
-        SkillGapRecommendation rec = SkillGapRecommendation.builder()
-                .studentProfile(profile)
-                .skill(skill)
-                .gapScore(gap)
-                .priority(gap > 30 ? "HIGH" : "MEDIUM")
-                .recommendedAction("Practice more")
-                .generatedBy("SYSTEM")
-                .generatedAt(Instant.now())
-                .build();
+        SkillGapRecommendation rec = new SkillGapRecommendation();
+        rec.setStudentProfile(profile);
+        rec.setSkill(skill);
+        rec.setGapScore(gap);
+        rec.setGeneratedBy("SYSTEM");
+        rec.setGeneratedAt(Instant.now());
 
         return recommendationRepo.save(rec);
     }
@@ -65,20 +59,21 @@ public class RecommendationServiceImpl implements RecommendationService {
     public List<SkillGapRecommendation> computeRecommendationsForStudent(Long studentId) {
 
         StudentProfile profile = profileRepo.findById(studentId)
-                .orElseThrow(() -> new RuntimeException("Student not found"));
+                .orElseThrow(() -> new RuntimeException("Profile not found"));
 
         List<Skill> skills = skillRepo.findByActiveTrue();
-        List<SkillGapRecommendation> list = new ArrayList<>();
+        List<SkillGapRecommendation> result = new ArrayList<>();
 
-        for (Skill s : skills) {
-            list.add(computeRecommendationForStudentSkill(profile.getId(), s.getId()));
+        for (Skill skill : skills) {
+            result.add(computeRecommendationForStudentSkill(profile.getId(), skill.getId()));
         }
 
-        return list;
+        return result;
     }
 
     @Override
     public List<SkillGapRecommendation> getRecommendationsForStudent(Long studentId) {
-        return recommendationRepo.findByStudentProfileIdOrderByGeneratedAtDesc(studentId);
+        return recommendationRepo
+                .findByStudentProfileIdOrderByGeneratedAtDesc(studentId);
     }
 }

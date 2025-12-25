@@ -18,9 +18,15 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public Skill createSkill(Skill skill) {
+
         if (repository.findByCode(skill.getCode()).isPresent()) {
             throw new IllegalArgumentException("Skill code must be unique");
         }
+
+        if (skill.getActive() == null) {
+            skill.setActive(true);
+        }
+
         return repository.save(skill);
     }
 

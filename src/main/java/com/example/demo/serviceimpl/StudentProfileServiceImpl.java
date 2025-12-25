@@ -5,6 +5,8 @@ import com.example.demo.repository.StudentProfileRepository;
 import com.example.demo.service.StudentProfileService;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+
 @Service
 public class StudentProfileServiceImpl implements StudentProfileService {
 
@@ -16,6 +18,8 @@ public class StudentProfileServiceImpl implements StudentProfileService {
 
     @Override
     public StudentProfile createOrUpdateProfile(StudentProfile profile) {
+
+        profile.setLastUpdatedAt(Instant.now());
         return repository.save(profile);
     }
 
