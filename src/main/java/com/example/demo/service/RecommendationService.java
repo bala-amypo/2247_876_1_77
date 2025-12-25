@@ -29,6 +29,8 @@ public interface RecommendationService {
 
     void computeRecommendationsForStudent(Long studentId);
 
-    // 🔴 REQUIRED by RecommendationController
-    void computeRecommendationForStudentSkill(Long studentId, Long skillId);
+    // 🔥 MUST RETURN SkillGapRecommendation
+    SkillGapRecommendation computeRecommendationForStudentSkill(
+            Long studentId, Long skillId
+    );
 }
