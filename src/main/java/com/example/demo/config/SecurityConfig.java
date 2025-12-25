@@ -11,6 +11,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig {
 
     @Bean
+    public JwtUtil jwtUtil() {
+        return new JwtUtil(
+                "01234567890123456789012345678901",
+                3600000
+        );
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
@@ -24,7 +32,7 @@ public class SecurityConfig {
                     "/swagger-ui.html",
                     "/api/**"
                 ).permitAll()
-                .anyRequest().permitAll()   // 🔥 THIS LINE FIXES 403
+                .anyRequest().permitAll()
             )
             .formLogin(form -> form.disable())
             .httpBasic(basic -> basic.disable());
