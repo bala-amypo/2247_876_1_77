@@ -19,7 +19,10 @@ public class Skill {
     private String name;
     private String category;
     private String description;
-    private int minCompetencyScore;
 
+    @Builder.Default
+    private int minCompetencyScore = 0;
+
+    @Builder.Default
     private boolean active = true;
 }
