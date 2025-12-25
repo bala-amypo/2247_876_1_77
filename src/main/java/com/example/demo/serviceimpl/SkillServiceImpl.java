@@ -23,10 +23,8 @@ public class SkillServiceImpl implements SkillService {
             throw new IllegalArgumentException("Skill code must be unique");
         }
 
-        // ✅ FIX HERE
-        if (skill.isActive() == null) {
-            skill.setActive(true);
-        }
+        // ✅ DO NOTHING ABOUT active
+        // default = true already handled by entity
 
         return repository.save(skill);
     }
