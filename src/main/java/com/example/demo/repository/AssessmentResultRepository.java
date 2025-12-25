@@ -8,10 +8,13 @@ import java.util.List;
 public interface AssessmentResultRepository
         extends JpaRepository<AssessmentResult, Long> {
 
-    // ✅ USED BY SERVICES
     List<AssessmentResult> findByStudentProfileId(Long studentProfileId);
 
-    // ✅ IF TEST EXPECTS "recent", order explicitly
-    List<AssessmentResult>
-    findByStudentProfileIdOrderByAttemptedAtDesc(Long studentProfileId);
+    List<AssessmentResult> findBySkillId(Long skillId);
+
+    // ⭐ REQUIRED BY TESTS (DO NOT REMOVE)
+    List<AssessmentResult> findByStudentProfileIdAndSkillId(
+            Long studentProfileId,
+            Long skillId
+    );
 }

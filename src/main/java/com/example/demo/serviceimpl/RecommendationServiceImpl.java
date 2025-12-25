@@ -1,7 +1,13 @@
 package com.example.demo.serviceimpl;
 
-import com.example.demo.entity.*;
-import com.example.demo.repository.*;
+import com.example.demo.entity.AssessmentResult;
+import com.example.demo.entity.Skill;
+import com.example.demo.entity.SkillGapRecommendation;
+import com.example.demo.entity.StudentProfile;
+import com.example.demo.repository.AssessmentResultRepository;
+import com.example.demo.repository.SkillGapRecommendationRepository;
+import com.example.demo.repository.SkillRepository;
+import com.example.demo.repository.StudentProfileRepository;
 import com.example.demo.service.RecommendationService;
 import org.springframework.stereotype.Service;
 
@@ -12,68 +18,97 @@ import java.util.List;
 @Service
 public class RecommendationServiceImpl implements RecommendationService {
 
-    private final AssessmentResultRepository assessmentRepo;
-    private final SkillGapRecommendationRepository recommendationRepo;
-    private final StudentProfileRepository profileRepo;
-    private final SkillRepository skillRepo;
+    private final AssessmentResultRepository assessmentResultRepository;
+    private final SkillGapRecommendationRepository recommendationRepository;
+    private final StudentProfileRepository studentProfileRepository;
+    private final SkillRepository skillRepository;
 
     public RecommendationServiceImpl(
-            AssessmentResultRepository assessmentRepo,
-            SkillGapRecommendationRepository recommendationRepo,
-            StudentProfileRepository profileRepo,
-            SkillRepository skillRepo) {
-
-        this.assessmentRepo = assessmentRepo;
-        this.recommendationRepo = recommendationRepo;
-        this.profileRepo = profileRepo;
-        this.skillRepo = skillRepo;
+            AssessmentResultRepository assessmentResultRepository,
+            SkillGapRecommendationRepository recommendationRepository,
+            StudentProfileRepository studentProfileRepository,
+            SkillRepository skillRepository
+    ) {
+        this.assessmentResultRepository = assessmentResultRepository;
+        this.recommendationRepository = recommendationRepository;
+        this.studentProfileRepository = studentProfileRepository;
+        this.skillRepository = skillRepository;
     }
 
-    @Override
-    public SkillGapRecommendation computeRecommendationForStudentSkill(Long studentId, Long skillId) {
+    // ================= TEST METHODS (NO @Override) =================
 
-        StudentProfile profile = profileRepo.findById(studentId)
+    public SkillGapRecommendation computeRecommendationForStudentSkill(
+            Long studentId,
+            Long skillId
+    ) {
+
+        StudentProfile profile = studentProfileRepository.findById(studentId)
                 .orElseThrow(() -> new RuntimeException("Profile not found"));
 
-        Skill skill = skillRepo.findById(skillId)
+        Skill skill = skillRepository.findById(skillId)
                 .orElseThrow(() -> new RuntimeException("Skill not found"));
 
         List<AssessmentResult> results =
-                assessmentRepo.findByStudentProfileIdAndSkillId(studentId, skillId);
+                assessmentResultRepository
+                        .findByStudentProfileIdAndSkillId(studentId, skillId);
 
-        double gap = results.isEmpty()
-                ? 100
-                : 100 - results.get(results.size() - 1).getScore();
+        double avgScore = results.stream()
+                .mapToDouble(AssessmentResult::getScore)
+                .average()
+                .orElse(0.0);
 
-        SkillGapRecommendation rec = new SkillGapRecommendation();
-        rec.setStudentProfile(profile);
-        rec.setSkill(skill);
-        rec.setGapScore(gap);
-        rec.setGeneratedBy("SYSTEM");
-        rec.setGeneratedAt(Instant.now());
+        SkillGapRecommendation recommendation =
+                SkillGapRecommendation.builder()
+                        .studentProfile(profile)
+                        .skill(skill)
+                        .gapScore(100.0 - avgScore)
+                        .generatedAt(Instant.now())
+                        .generatedBy("SYSTEM")
+                        .build();
 
-        return recommendationRepo.save(rec);
+        return recommendationRepository.save(recommendation);
     }
 
-    @Override
-    public List<SkillGapRecommendation> computeRecommendationsForStudent(Long studentId) {
+    public List<SkillGapRecommendation> computeRecommendationsForStudent(
+            Long studentId
+    ) {
 
-        StudentProfile profile = profileRepo.findById(studentId)
+        StudentProfile profile = studentProfileRepository.findById(studentId)
                 .orElseThrow(() -> new RuntimeException("Profile not found"));
 
-        List<Skill> skills = skillRepo.findByActiveTrue();
+        List<Skill> skills = skillRepository.findByActiveTrue();
         List<SkillGapRecommendation> result = new ArrayList<>();
 
         for (Skill skill : skills) {
-            result.add(computeRecommendationForStudentSkill(profile.getId(), skill.getId()));
+            result.add(
+                    computeRecommendationForStudentSkill(
+                            profile.getId(),
+                            skill.getId()
+                    )
+            );
         }
 
         return result;
     }
 
-    @Override
-    public List<SkillGapRecommendation> getRecommendationsForStudent(Long studentId) {
-        return recommendationRepo
+    public List<SkillGapRecommendation> getRecommendationsForStudent(
+            Long studentId
+    ) {
+        return recommendationRepository
                 .findByStudentProfileIdOrderByGeneratedAtDesc(studentId);
+    }
+
+    // ================= INTERFACE METHODS =================
+
+    @Override
+    public SkillGapRecommendation createRecommendation(
+            SkillGapRecommendation recommendation
+    ) {
+        return recommendationRepository.save(recommendation);
+    }
+
+    @Override
+    public List<SkillGapRecommendation> getAllRecommendations() {
+        return recommendationRepository.findAll();
     }
 }
