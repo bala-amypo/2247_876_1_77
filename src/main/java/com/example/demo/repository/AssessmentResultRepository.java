@@ -43,7 +43,6 @@ public interface AssessmentResultRepository
             Long skillId
     );
 
-    // ✅ FINAL FIX: both parameters are used, query is valid
     @Query("""
            SELECT AVG(r.score)
            FROM AssessmentResult r
@@ -55,16 +54,15 @@ public interface AssessmentResultRepository
             @Param("skillId") Long skillId
     );
 
-   @Query("""
-       SELECT r
-       FROM AssessmentResult r
-       WHERE r.studentProfile.id = :studentId
-       ORDER BY r.attemptedAt DESC
-       """)
-List<AssessmentResult> findRecentByStudent(
-        @Param("studentId") Long studentId
-);
-
+    @Query("""
+           SELECT r
+           FROM AssessmentResult r
+           WHERE r.studentProfile.id = :studentId
+           ORDER BY r.attemptedAt DESC
+           """)
+    List<AssessmentResult> findRecentByStudent(
+            @Param("studentId") Long studentId
+    );
 
     List<AssessmentResult> findResultsForStudentBetween(
             Long studentId,
