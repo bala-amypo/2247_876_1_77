@@ -33,7 +33,7 @@
 //     List<SkillGapRecommendation> getRecommendationsForStudent(Long studentId);
 //}
 package com.example.demo.service;
-
+@Service
 import com.example.demo.entity.SkillGapRecommendation;
 import java.util.List;
 
