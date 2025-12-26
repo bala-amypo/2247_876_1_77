@@ -109,20 +109,6 @@
 //     }
 
 // }
-package com.example.demo.serviceimpl;
-
-import com.example.demo.entity.Skill;
-import com.example.demo.entity.SkillGapRecommendation;
-import com.example.demo.entity.StudentProfile;
-import com.example.demo.repository.SkillGapRecommendationRepository;
-import com.example.demo.repository.SkillRepository;
-import com.example.demo.repository.StudentProfileRepository;
-import com.example.demo.service.RecommendationService;
-import org.springframework.stereotype.Service;
-
-import java.time.Instant;
-import java.util.List;
-
 @Service
 public class RecommendationServiceImpl implements RecommendationService {
 
@@ -141,9 +127,7 @@ public class RecommendationServiceImpl implements RecommendationService {
     }
 
     @Override
-    public SkillGapRecommendation createRecommendation(
-            SkillGapRecommendation recommendation
-    ) {
+    public SkillGapRecommendation createRecommendation(SkillGapRecommendation recommendation) {
         return recommendationRepository.save(recommendation);
     }
 
@@ -159,35 +143,29 @@ public class RecommendationServiceImpl implements RecommendationService {
     }
 
     @Override
-public List<SkillGapRecommendation> computeRecommendationsForStudent(Long studentId) {
-    // Tests expect a list, not void
-    return recommendationRepository
-            .findByStudentProfileIdOrderByGeneratedAtDesc(studentId);
-}
-
+    public List<SkillGapRecommendation> computeRecommendationsForStudent(Long studentId) {
+        return recommendationRepository
+                .findByStudentProfileIdOrderByGeneratedAtDesc(studentId);
+    }
 
     @Override
     public SkillGapRecommendation computeRecommendationForStudentSkill(
             Long studentId,
             Long skillId
     ) {
-        StudentProfile profile =
-                studentProfileRepository.findById(studentId).orElseThrow();
+        StudentProfile profile = studentProfileRepository.findById(studentId).orElseThrow();
+        Skill skill = skillRepository.findById(skillId).orElseThrow();
 
-        Skill skill =
-                skillRepository.findById(skillId).orElseThrow();
+        SkillGapRecommendation rec = SkillGapRecommendation.builder()
+                .studentProfile(profile)
+                .skill(skill)
+                .generatedAt(Instant.now())
+                .generatedBy("SYSTEM")
+                .gapScore(0.0)
+                .priority("MEDIUM")
+                .recommendedAction("IMPROVE_SKILL")
+                .build();
 
-        SkillGapRecommendation recommendation =
-                SkillGapRecommendation.builder()
-                        .studentProfile(profile)
-                        .skill(skill)
-                        .generatedAt(Instant.now())
-                        .generatedBy("SYSTEM")
-                        .gapScore(0.0)
-                        .priority("MEDIUM")
-                        .recommendedAction("IMPROVE_SKILL")
-                        .build();
-
-        return recommendationRepository.save(recommendation);
+        return recommendationRepository.save(rec);
     }
 }
