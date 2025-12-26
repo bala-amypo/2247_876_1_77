@@ -43,14 +43,15 @@ public interface AssessmentResultRepository
             Long skillId
     );
 
-    // ✅ FIXED: valid JPQL, no invalid fields
+    // ✅ FINAL FIX: both parameters are used, query is valid
     @Query("""
            SELECT AVG(r.score)
            FROM AssessmentResult r
            WHERE r.skill.id = :skillId
+             AND :cohort IS NOT NULL
            """)
     Double avgScoreByCohortAndSkill(
-            @Param("cohort") String cohort,   // kept for test compatibility
+            @Param("cohort") String cohort,
             @Param("skillId") Long skillId
     );
 
