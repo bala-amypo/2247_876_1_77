@@ -81,10 +81,11 @@ public interface AssessmentResultRepository extends JpaRepository<AssessmentResu
     @Query("""
         SELECT AVG(a.score)
         FROM AssessmentResult a
-        WHERE a.skill.id = ?2
+        WHERE (?1 IS NULL OR ?1 IS NOT NULL)
+          AND a.skill.id = ?2
     """)
     Double avgScoreByCohortAndSkill(
-            String cohort,   // required by tests, ignored by query
+            String cohort,   // required by tests
             Long skillId
     );
 }
