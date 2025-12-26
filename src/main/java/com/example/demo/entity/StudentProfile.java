@@ -17,18 +17,7 @@ public class StudentProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String enrollmentId;
-    private String grade;
     private String cohort;
 
-    @Builder.Default
-    private boolean active = true;
-
-    @Builder.Default
-    private Instant lastUpdatedAt = Instant.now();
-
-    @PreUpdate
-    public void preUpdate() {
-        this.lastUpdatedAt = Instant.now();
-    }
+    private Instant lastUpdatedAt;
 }

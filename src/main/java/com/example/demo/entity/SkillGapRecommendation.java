@@ -24,8 +24,6 @@ public class SkillGapRecommendation {
     private Skill skill;
 
     private double gapScore;
-    private String recommendedAction;
-    private String priority;
-    private String generatedBy;
+
     private Instant generatedAt;
 }

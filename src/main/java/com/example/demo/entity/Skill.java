@@ -16,13 +16,14 @@ public class Skill {
     private Long id;
 
     private String code;
+
     private String name;
+
     private String category;
+
     private String description;
 
-    @Builder.Default
-    private int minCompetencyScore = 0;
+    private int minCompetencyScore;
 
-    @Builder.Default
     private boolean active = true;
 }

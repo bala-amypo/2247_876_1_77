@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,16 +16,11 @@ public class User {
     private Long id;
 
     private String fullName;
+
+    @Column(unique = true)
     private String email;
+
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
-    // ✅ NESTED ENUM — THIS IS THE KEY FIX
-    public enum Role {
-        ADMIN,
-        INSTRUCTOR,
-        STUDENT
-    }
+    private String role;
 }

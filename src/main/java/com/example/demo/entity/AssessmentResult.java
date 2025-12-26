@@ -17,19 +17,15 @@ public class AssessmentResult {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String assessmentId;
-
-    private Double score;
-
-    @Builder.Default
-    private Double maxScore = 100.0;
-
-    @Builder.Default
-    private Instant attemptedAt = Instant.now();
-
     @ManyToOne
     private StudentProfile studentProfile;
 
     @ManyToOne
     private Skill skill;
+
+    private double score;
+
+    private double maxScore;
+
+    private Instant attemptedAt;
 }

@@ -14,15 +14,8 @@
 //}
 package com.example.demo.repository;
 
-import com.example.demo.entity.SkillGapRecommendation;
+import com.example.demo.entity.Skill;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
-public interface SkillGapRecommendationRepository
-        extends JpaRepository<SkillGapRecommendation, Long> {
-
-    // t038 (ORDER MATTERS!)
-    List<SkillGapRecommendation>
-    findByStudentProfileIdOrderByGeneratedAtDesc(Long studentProfileId);
+public interface SkillRepository extends JpaRepository<Skill, Long> {
 }
