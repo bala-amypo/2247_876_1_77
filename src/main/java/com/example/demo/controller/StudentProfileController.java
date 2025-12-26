@@ -43,4 +43,7 @@ public class StudentProfileController {
     }
 
     @GetMapping
-    public List<StudentProfile>
+    public List<StudentProfile> getAll() {
+        return studentProfileService.getAll();
+    }
+}
