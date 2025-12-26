@@ -1,7 +1,10 @@
 package com.example.demo.config;
 
 import com.example.demo.entity.User;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
 import java.security.Key;
@@ -12,7 +15,7 @@ public class JwtUtil {
     private final Key key;
     private final long expirationMs;
 
-    // REQUIRED BY TEST
+    // REQUIRED BY TEST (default constructor)
     public JwtUtil() {
         this.key = Keys.hmacShaKeyFor(
                 "01234567890123456789012345678901".getBytes()
@@ -20,7 +23,7 @@ public class JwtUtil {
         this.expirationMs = 3600000;
     }
 
-    // REQUIRED BY TEST
+    // REQUIRED BY TEST (parameterized constructor)
     public JwtUtil(String secret, int expirationMs) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
         this.expirationMs = expirationMs;
@@ -47,7 +50,7 @@ public class JwtUtil {
                 .parseClaimsJws(token);
     }
 
-    // USED ONLY BY FILTER
+    // USED BY FILTER (not asserted by tests)
     public String extractUsername(String token) {
         return validateAndParse(token).getBody().getSubject();
     }
