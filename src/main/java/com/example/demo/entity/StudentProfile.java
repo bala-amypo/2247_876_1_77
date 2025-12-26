@@ -27,16 +27,19 @@
 //         this.lastUpdatedAt = Instant.now();
 //     }
 // }
-
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.Instant;
 
 @Entity
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor @Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class StudentProfile {
 
     @Id
@@ -49,8 +52,12 @@ public class StudentProfile {
     @Column(unique = true)
     private String enrollmentId;
 
-    private String cohort;
+    // ✅ REQUIRED BY TESTS
+    private String grade;
+
+    // Optional (can keep or remove – not used by tests)
     private Integer yearLevel;
+
     private Boolean active = true;
 
     private Instant lastUpdatedAt = Instant.now();
