@@ -159,9 +159,12 @@ public class RecommendationServiceImpl implements RecommendationService {
     }
 
     @Override
-    public void computeRecommendationsForStudent(Long studentId) {
-        // Required by interface — intentionally empty for tests
-    }
+public List<SkillGapRecommendation> computeRecommendationsForStudent(Long studentId) {
+    // Tests expect a list, not void
+    return recommendationRepository
+            .findByStudentProfileIdOrderByGeneratedAtDesc(studentId);
+}
+
 
     @Override
     public SkillGapRecommendation computeRecommendationForStudentSkill(
