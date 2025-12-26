@@ -36,27 +36,37 @@ import java.util.List;
 
 public interface AssessmentResultRepository extends JpaRepository<AssessmentResult, Long> {
 
-    // Used by recommendation service & tests
+    // Used by services/tests
     List<AssessmentResult> findByStudentProfileIdAndSkillId(
             Long studentProfileId,
             Long skillId
     );
 
-    // Actual JPA-derived query (runtime-safe)
-    List<AssessmentResult> findRecentByStudentProfileId(Long studentProfileId);
-
-    // ✅ Compatibility method for existing TestNG tests
-    default List<AssessmentResult> findRecentByStudent(Long studentId) {
-        return findRecentByStudentProfileId(studentId);
-    }
-
-    // Used in HQL/JPQL test cases
-    Double avgScoreByCohortAndSkill(String cohort, Long skillId);
-
-    // Time-range query
-    List<AssessmentResult> findResultsForStudentBetween(
+    // ---------- FIX 1 ----------
+    // Correct JPA-derived method
+    List<AssessmentResult> findByStudentProfileIdAndAttemptedAtBetween(
             Long studentProfileId,
             Instant from,
             Instant to
     );
+
+    // ---------- FIX 2 ----------
+    // Compatibility for existing tests
+    default List<AssessmentResult> findResultsForStudentBetween(
+            Long studentProfileId,
+            Instant from,
+            Instant to
+    ) {
+        return findByStudentProfileIdAndAttemptedAtBetween(studentProfileId, from, to);
+    }
+
+    // ---------- FIX 3 ----------
+    List<AssessmentResult> findRecentByStudentProfileId(Long studentProfileId);
+
+    default List<AssessmentResult> findRecentByStudent(Long studentId) {
+        return findRecentByStudentProfileId(studentId);
+    }
+
+    // ---------- FIX 4 ----------
+    Double avgScoreByCohortAndSkill(String cohort, Long skillId);
 }
