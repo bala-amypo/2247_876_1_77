@@ -35,7 +35,7 @@
          SPRING BOOT CORE
          =============================== -->
 
-    <!-- Spring Web (Controllers, REST APIs) -->
+    <!-- Spring Web (Controllers, REST APIs, Servlet support) -->
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-web</artifactId>
@@ -57,7 +57,7 @@
          DATABASE
          =============================== -->
 
-    <!-- H2 Database (runtime only, tests do not use DB directly) -->
+    <!-- H2 Database (runtime only) -->
     <dependency>
         <groupId>com.h2database</groupId>
         <artifactId>h2</artifactId>
@@ -65,29 +65,27 @@
     </dependency>
 
     <!-- ===============================
-         LOMBOK (CRITICAL)
+         LOMBOK (CRITICAL – FIXED)
          =============================== -->
 
-    <!-- Lombok for @Getter, @Setter, @Builder, etc. -->
+    <!-- Lombok for getters/setters/builders -->
     <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
-        <version>1.18.30</version>
+        <version>1.18.32</version>
         <scope>provided</scope>
     </dependency>
 
     <!-- ===============================
-         JWT (CRITICAL FOR TESTS 26–29, 39, 53, 59)
+         JWT (CRITICAL – TESTED)
          =============================== -->
 
-    <!-- JJWT API -->
     <dependency>
         <groupId>io.jsonwebtoken</groupId>
         <artifactId>jjwt-api</artifactId>
         <version>0.11.5</version>
     </dependency>
 
-    <!-- JJWT Implementation -->
     <dependency>
         <groupId>io.jsonwebtoken</groupId>
         <artifactId>jjwt-impl</artifactId>
@@ -95,7 +93,6 @@
         <scope>runtime</scope>
     </dependency>
 
-    <!-- JJWT Jackson (JSON parsing) -->
     <dependency>
         <groupId>io.jsonwebtoken</groupId>
         <artifactId>jjwt-jackson</artifactId>
@@ -104,19 +101,20 @@
     </dependency>
 
     <!-- ===============================
-         OPENAPI / SWAGGER (SAFE, NOT TESTED)
+         OPENAPI / SWAGGER (WORKING)
          =============================== -->
 
     <dependency>
         <groupId>org.springdoc</groupId>
         <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-        <version>2.3.0</version>
+        <version>2.5.0</version>
     </dependency>
 
     <!-- ===============================
-         EMBEDDED TOMCAT (REQUIRED BY ASSIGNMENT)
+         EMBEDDED TOMCAT
          =============================== -->
 
+    <!-- REQUIRED: keep provided (do NOT remove) -->
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-tomcat</artifactId>
@@ -124,24 +122,28 @@
     </dependency>
 
     <!-- ===============================
-         TESTING (CRITICAL)
+         TESTING (TESTNG + MOCKITO)
          =============================== -->
 
-    <!-- Spring Boot Test (Mockito, Assertions, Context) -->
+    <!-- Spring Boot Test (Mockito, Assertions) -->
     <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-test</artifactId>
         <scope>test</scope>
         <exclusions>
-            <!-- Remove JUnit because tests use TestNG -->
+            <!-- Remove JUnit 5 engine -->
             <exclusion>
                 <groupId>org.junit.vintage</groupId>
                 <artifactId>junit-vintage-engine</artifactId>
             </exclusion>
+            <exclusion>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter</artifactId>
+            </exclusion>
         </exclusions>
     </dependency>
 
-    <!-- TestNG (REQUIRED – tests are written in TestNG) -->
+    <!-- TestNG (MANDATORY – your tests use TestNG) -->
     <dependency>
         <groupId>org.testng</groupId>
         <artifactId>testng</artifactId>
