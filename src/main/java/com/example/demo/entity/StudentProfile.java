@@ -27,13 +27,6 @@
 //         this.lastUpdatedAt = Instant.now();
 //     }
 // }
-package com.example.demo.entity;
-
-import jakarta.persistence.*;
-import lombok.*;
-
-import java.time.Instant;
-
 @Entity
 @Getter
 @Setter
@@ -52,14 +45,15 @@ public class StudentProfile {
     @Column(unique = true)
     private String enrollmentId;
 
-    // ✅ REQUIRED BY TESTS
+    // REQUIRED BY TESTS
     private String grade;
 
-    // Optional (can keep or remove – not used by tests)
     private Integer yearLevel;
 
     private Boolean active = true;
 
+    // ✅ FIX: must NEVER be null
+    @Builder.Default
     private Instant lastUpdatedAt = Instant.now();
 
     @PreUpdate
