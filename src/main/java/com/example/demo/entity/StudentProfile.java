@@ -27,6 +27,13 @@
 //         this.lastUpdatedAt = Instant.now();
 //     }
 // }
+package com.example.demo.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.Instant;
+
 @Entity
 @Getter
 @Setter
@@ -52,7 +59,7 @@ public class StudentProfile {
 
     private Boolean active = true;
 
-    // ✅ FIX: must NEVER be null
+    // ✅ MUST NOT BE NULL (required by TestNG)
     @Builder.Default
     private Instant lastUpdatedAt = Instant.now();
 
