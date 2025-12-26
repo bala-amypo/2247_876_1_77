@@ -25,6 +25,8 @@ public class JwtUtil {
     }
 
     public Jws<Claims> validateAndParse(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+        return Jwts.parser()
+                .setSigningKey(secret)
+                .parseClaimsJws(token);
     }
 }
