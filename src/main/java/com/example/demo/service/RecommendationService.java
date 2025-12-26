@@ -17,7 +17,7 @@
 //     List<SkillGapRecommendation> getRecommendationsForStudent(
 //             Long studentProfileId
 //     );
-// }
+//}
 package com.example.demo.service;
 
 import com.example.demo.entity.SkillGapRecommendation;

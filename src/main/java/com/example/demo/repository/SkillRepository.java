@@ -11,7 +11,7 @@
 //     Optional<Skill> findByCode(String code);
 
 //     List<Skill> findByActiveTrue();
-// }
+//}
 package com.example.demo.repository;
 
 import com.example.demo.entity.SkillGapRecommendation;
