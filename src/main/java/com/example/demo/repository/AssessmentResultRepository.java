@@ -25,53 +25,50 @@
 //     findResultsForStudentBetween(Long studentProfileId,
 //                                  Instant start,
 //                                  Instant end);
-//}
+// }
 package com.example.demo.repository;
 
 import com.example.demo.entity.AssessmentResult;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.time.Instant;
 import java.util.List;
 
 public interface AssessmentResultRepository extends JpaRepository<AssessmentResult, Long> {
 
-    // ---------- BASIC ----------
+    // ---------------- BASIC ----------------
     List<AssessmentResult> findByStudentProfileIdAndSkillId(
             Long studentProfileId,
             Long skillId
     );
 
-    // ---------- RECENT ----------
+    // ---------------- RECENT ----------------
     @Query("""
         SELECT a FROM AssessmentResult a
-        WHERE a.studentProfile.id = :studentProfileId
+        WHERE a.studentProfile.id = ?1
         ORDER BY a.attemptedAt DESC
     """)
-    List<AssessmentResult> findRecentByStudentProfileId(
-            @Param("studentProfileId") Long studentProfileId
-    );
+    List<AssessmentResult> findRecentByStudentProfileId(Long studentProfileId);
 
-    // Keep test compatibility
+    // For tests
     default List<AssessmentResult> findRecentByStudent(Long studentId) {
         return findRecentByStudentProfileId(studentId);
     }
 
-    // ---------- BETWEEN DATES ----------
+    // ---------------- BETWEEN DATES ----------------
     @Query("""
         SELECT a FROM AssessmentResult a
-        WHERE a.studentProfile.id = :studentProfileId
-          AND a.attemptedAt BETWEEN :from AND :to
+        WHERE a.studentProfile.id = ?1
+          AND a.attemptedAt BETWEEN ?2 AND ?3
     """)
     List<AssessmentResult> findResultsBetweenDates(
-            @Param("studentProfileId") Long studentProfileId,
-            @Param("from") Instant from,
-            @Param("to") Instant to
+            Long studentProfileId,
+            Instant from,
+            Instant to
     );
 
-    // Keep test compatibility
+    // For tests
     default List<AssessmentResult> findResultsForStudentBetween(
             Long studentProfileId,
             Instant from,
@@ -80,14 +77,14 @@ public interface AssessmentResultRepository extends JpaRepository<AssessmentResu
         return findResultsBetweenDates(studentProfileId, from, to);
     }
 
-    // ---------- AVERAGE SCORE ----------
+    // ---------------- AVERAGE SCORE ----------------
     @Query("""
         SELECT AVG(a.score)
         FROM AssessmentResult a
-        WHERE a.skill.id = :skillId
+        WHERE a.skill.id = ?2
     """)
     Double avgScoreByCohortAndSkill(
-            @Param("cohort") String cohort,   // ignored but required by tests
-            @Param("skillId") Long skillId
+            String cohort,   // required by tests, ignored by query
+            Long skillId
     );
 }
