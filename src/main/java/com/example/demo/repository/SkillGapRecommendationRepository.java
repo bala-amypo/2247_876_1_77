@@ -16,21 +16,13 @@ package com.example.demo.repository;
 
 import com.example.demo.entity.SkillGapRecommendation;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
 @Repository
 public interface SkillGapRecommendationRepository
         extends JpaRepository<SkillGapRecommendation, Long> {
 
-    // --------------------------------------------------
-    // FIXED: Explicit query replaces broken method name
-    // --------------------------------------------------
-    @Query("""
-        SELECT s
-        FROM SkillGapRecommendation s
-        WHERE s.student.id = ?1
-        ORDER BY s.gapScore DESC
-    """)
-    List<SkillGapRecommendation> findByStudentOrdered(Long studentId);
+    List<SkillGapRecommendation> findByStudentId(Long studentId);
 }
