@@ -1,14 +1,14 @@
 package com.example.demo.dto;
 
-public class RecommendationRequest {
+public class RecommendationDTO {
 
     private Long studentProfileId;
     private Long skillId;
 
-    public RecommendationRequest() {
+    public RecommendationDTO() {
     }
 
-    public RecommendationRequest(Long studentProfileId, Long skillId) {
+    public RecommendationDTO(Long studentProfileId, Long skillId) {
         this.studentProfileId = studentProfileId;
         this.skillId = skillId;
     }
