@@ -55,7 +55,16 @@ public interface AssessmentResultRepository
             @Param("skillId") Long skillId
     );
 
-    List<AssessmentResult> findRecentByStudent(Long studentId);
+   @Query("""
+       SELECT r
+       FROM AssessmentResult r
+       WHERE r.studentProfile.id = :studentId
+       ORDER BY r.attemptedAt DESC
+       """)
+List<AssessmentResult> findRecentByStudent(
+        @Param("studentId") Long studentId
+);
+
 
     List<AssessmentResult> findResultsForStudentBetween(
             Long studentId,
