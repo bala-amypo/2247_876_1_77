@@ -2,24 +2,31 @@ package com.example.demo.serviceimpl;
 
 import com.example.demo.entity.StudentProfile;
 import com.example.demo.repository.StudentProfileRepository;
-import com.example.demo.service.StudentProfileService;
+import java.util.List;
 
-public class StudentProfileServiceImpl implements StudentProfileService {
+public class StudentProfileServiceImpl {
 
-    private final StudentProfileRepository repository;
+    private final StudentProfileRepository repo;
 
-    public StudentProfileServiceImpl(StudentProfileRepository repository) {
-        this.repository = repository;
+    public StudentProfileServiceImpl(StudentProfileRepository repo) {
+        this.repo = repo;
     }
 
-    @Override
     public StudentProfile createOrUpdateProfile(StudentProfile profile) {
-        return repository.save(profile);
+        return repo.save(profile);
     }
 
-    @Override
     public StudentProfile getByUserId(Long userId) {
-        return repository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Profile not found"));
+        return repo.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("profile not found"));
+    }
+
+    public StudentProfile getProfileById(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("profile not found"));
+    }
+
+    public List<StudentProfile> getAllProfiles() {
+        return repo.findAll();
     }
 }

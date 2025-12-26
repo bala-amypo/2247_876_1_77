@@ -15,12 +15,16 @@
 // }
 package com.example.demo.service;
 
-import com.example.demo.entity.StudentProfile;
+import com.example.demo.entity.User;
 import java.util.List;
 
-public interface StudentProfileService {
-    StudentProfile createOrUpdateProfile(StudentProfile profile);
-    StudentProfile getByUserId(Long userId);
-    StudentProfile getProfileById(Long id);
-    List<StudentProfile> getAllProfiles();
+public interface UserService {
+
+    User register(User user);
+
+    User getById(Long id);
+
+    User findByEmail(String email);
+
+    List<User> listInstructors();
 }
