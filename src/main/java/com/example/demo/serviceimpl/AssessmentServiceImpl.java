@@ -22,22 +22,44 @@
 
 package com.example.demo.serviceimpl;
 
+import com.example.demo.entity.AssessmentResult;
+import com.example.demo.repository.AssessmentResultRepository;
 import com.example.demo.service.AssessmentService;
 import org.springframework.stereotype.Service;
 
-@Service // ✅ THIS WAS MISSING
-public class AssessmentServiceImpl implements AssessmentService {
-     private final AssessmentResultRepository repo;
+import java.time.Instant;
+import java.util.List;
 
-    public AssessmentServiceImpl(AssessmentResultRepository repo) {
-        this.repo = repo;
+@Service
+public class AssessmentServiceImpl implements AssessmentService {
+
+    private final AssessmentResultRepository repository;
+
+    public AssessmentServiceImpl(AssessmentResultRepository repository) {
+        this.repository = repository;
     }
 
-    public AssessmentResult recordAssessment(AssessmentResult r) {
-        if (r.getScore() == null)
-            throw new IllegalArgumentException("Score required");
-        if (r.getScore() < 0 || r.getScore() > r.getMaxScore())
-            throw new IllegalArgumentException("Score invalid");
-        return repo.save(r);
-    // existing code — DO NOT CHANGE LOGIC
+    @Override
+    public AssessmentResult saveResult(AssessmentResult result) {
+        return repository.save(result);
+    }
+
+    @Override
+    public List<AssessmentResult> getResultsByStudentAndSkill(Long studentProfileId, Long skillId) {
+        return repository.findByStudentProfileIdAndSkillId(studentProfileId, skillId);
+    }
+
+    @Override
+    public List<AssessmentResult> getRecentResults(Long studentProfileId) {
+        return repository.findRecentByStudent(studentProfileId);
+    }
+
+    @Override
+    public List<AssessmentResult> getResultsBetween(
+            Long studentProfileId,
+            Instant from,
+            Instant to
+    ) {
+        return repository.findResultsForStudentBetween(studentProfileId, from, to);
+    }
 }
