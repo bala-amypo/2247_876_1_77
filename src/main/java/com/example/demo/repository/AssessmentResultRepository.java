@@ -64,9 +64,18 @@ public interface AssessmentResultRepository
             @Param("studentId") Long studentId
     );
 
+    // ✅ FINAL FIX — NO DERIVED NAME
+    @Query("""
+           SELECT r
+           FROM AssessmentResult r
+           WHERE r.studentProfile.id = :studentId
+             AND r.attemptedAt >= :from
+             AND r.attemptedAt <= :to
+           ORDER BY r.attemptedAt DESC
+           """)
     List<AssessmentResult> findResultsForStudentBetween(
-            Long studentId,
-            Instant from,
-            Instant to
+            @Param("studentId") Long studentId,
+            @Param("from") Instant from,
+            @Param("to") Instant to
     );
 }
