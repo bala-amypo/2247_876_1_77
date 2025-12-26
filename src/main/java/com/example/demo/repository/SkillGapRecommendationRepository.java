@@ -26,3 +26,4 @@ public interface SkillGapRecommendationRepository
 
     List<SkillGapRecommendation> findByStudentId(Long studentId);
 }
+
