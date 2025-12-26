@@ -3,11 +3,7 @@ package com.example.demo.serviceimpl;
 import com.example.demo.entity.AssessmentResult;
 import com.example.demo.repository.AssessmentResultRepository;
 import com.example.demo.service.AssessmentService;
-import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-
-@Service
 public class AssessmentServiceImpl implements AssessmentService {
 
     private final AssessmentResultRepository repository;
@@ -28,11 +24,7 @@ public class AssessmentServiceImpl implements AssessmentService {
         }
 
         if (result.getScore() < 0 || result.getScore() > result.getMaxScore()) {
-            throw new IllegalArgumentException("Score exceeds maximum");
-        }
-
-        if (result.getAttemptedAt() == null) {
-            result.setAttemptedAt(Instant.now());
+            throw new IllegalArgumentException("Score out of range");
         }
 
         return repository.save(result);

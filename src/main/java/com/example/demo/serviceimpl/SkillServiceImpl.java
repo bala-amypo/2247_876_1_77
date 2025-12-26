@@ -3,11 +3,9 @@ package com.example.demo.serviceimpl;
 import com.example.demo.entity.Skill;
 import com.example.demo.repository.SkillRepository;
 import com.example.demo.service.SkillService;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public class SkillServiceImpl implements SkillService {
 
     private final SkillRepository repository;
@@ -18,14 +16,9 @@ public class SkillServiceImpl implements SkillService {
 
     @Override
     public Skill createSkill(Skill skill) {
-
         if (repository.findByCode(skill.getCode()).isPresent()) {
             throw new IllegalArgumentException("Skill code must be unique");
         }
-
-        // ✅ DO NOTHING ABOUT active
-        // default = true already handled by entity
-
         return repository.save(skill);
     }
 
