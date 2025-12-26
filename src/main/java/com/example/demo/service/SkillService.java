@@ -30,7 +30,7 @@
 //     List<Skill> getActiveSkills();
 // }
 package com.example.demo.service;
-@Service
+
 import com.example.demo.entity.Skill;
 import java.util.List;
 
