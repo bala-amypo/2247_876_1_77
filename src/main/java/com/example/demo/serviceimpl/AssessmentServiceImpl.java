@@ -18,17 +18,13 @@
 //             throw new IllegalArgumentException("Score invalid");
 //         return repo.save(r);
 //     }
-// }
-
+//}
 package com.example.demo.serviceimpl;
 
 import com.example.demo.entity.AssessmentResult;
 import com.example.demo.repository.AssessmentResultRepository;
 import com.example.demo.service.AssessmentService;
 import org.springframework.stereotype.Service;
-
-import java.time.Instant;
-import java.util.List;
 
 @Service
 public class AssessmentServiceImpl implements AssessmentService {
@@ -39,27 +35,9 @@ public class AssessmentServiceImpl implements AssessmentService {
         this.repository = repository;
     }
 
+    // ✅ MUST MATCH INTERFACE EXACTLY
     @Override
-    public AssessmentResult saveResult(AssessmentResult result) {
+    public AssessmentResult recordAssessment(AssessmentResult result) {
         return repository.save(result);
-    }
-
-    @Override
-    public List<AssessmentResult> getResultsByStudentAndSkill(Long studentProfileId, Long skillId) {
-        return repository.findByStudentProfileIdAndSkillId(studentProfileId, skillId);
-    }
-
-    @Override
-    public List<AssessmentResult> getRecentResults(Long studentProfileId) {
-        return repository.findRecentByStudent(studentProfileId);
-    }
-
-    @Override
-    public List<AssessmentResult> getResultsBetween(
-            Long studentProfileId,
-            Instant from,
-            Instant to
-    ) {
-        return repository.findResultsForStudentBetween(studentProfileId, from, to);
     }
 }
