@@ -2,43 +2,34 @@ package com.example.demo.serviceimpl;
 
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.service.UserService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import java.util.*;
 
-import java.util.List;
+public class UserServiceImpl {
 
-public class UserServiceImpl implements UserService {
-
-    private final UserRepository userRepository;
+    private final UserRepository repo;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserServiceImpl(UserRepository repo) {
+        this.repo = repo;
     }
 
-    @Override
-    public User register(User user) {
-        if (userRepository.existsByEmail(user.getEmail())) {
+    public User register(User u) {
+        if (repo.existsByEmail(u.getEmail()))
             throw new IllegalArgumentException("Email already exists");
-        }
-        user.setPassword(encoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        u.setPassword(encoder.encode(u.getPassword()));
+        return repo.save(u);
     }
 
-    @Override
     public User findByEmail(String email) {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        return repo.findByEmail(email).orElseThrow();
     }
 
-    @Override
     public User getById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        return repo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    @Override
     public List<User> listInstructors() {
-        return userRepository.findByRole(User.Role.INSTRUCTOR);
+        return repo.findByRole(User.Role.INSTRUCTOR);
     }
 }
