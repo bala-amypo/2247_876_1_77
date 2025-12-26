@@ -26,14 +26,15 @@ import java.util.List;
 
 public interface RecommendationService {
 
-    SkillGapRecommendation createRecommendation(SkillGapRecommendation recommendation);
+    // used by controller
+    SkillGapRecommendation computeRecommendationForStudentSkill(
+            Long studentId,
+            Long skillId
+    );
 
-    List<SkillGapRecommendation> getAllRecommendations();
-
-    List<SkillGapRecommendation> getRecommendationsForStudent(Long studentId);
-
-    // 🔴 IMPORTANT: RETURN TYPE IS List
+    // used by tests
     List<SkillGapRecommendation> computeRecommendationsForStudent(Long studentId);
 
-    SkillGapRecommendation computeRecommendationForStudentSkill(Long studentId, Long skillId);
+    // used by history endpoint + tests
+    List<SkillGapRecommendation> getRecommendationsForStudent(Long studentId);
 }
