@@ -36,11 +36,15 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.Instant;
 
 @Entity
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor @Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class AssessmentResult {
 
     @Id
@@ -57,7 +61,11 @@ public class AssessmentResult {
 
     private Double score;
 
+    // ✅ REQUIRED BY TESTS
+    @Builder.Default
     private Double maxScore = 100.0;
 
+    // ✅ REQUIRED BY TESTS
+    @Builder.Default
     private Instant attemptedAt = Instant.now();
 }
