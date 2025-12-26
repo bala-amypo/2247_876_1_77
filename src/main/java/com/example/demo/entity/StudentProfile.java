@@ -1,10 +1,40 @@
-package com.example.demo.entity;
+// package com.example.demo.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+// import jakarta.persistence.*;
+// import lombok.*;
 
-import java.time.Instant;
+// import java.time.Instant;
 
+// @Entity
+// @Getter
+// @Setter
+// @NoArgsConstructor
+// @AllArgsConstructor
+// @Builder
+// public class StudentProfile {
+
+//     @Id
+//     @GeneratedValue(strategy = GenerationType.IDENTITY)
+//     private Long id;
+
+//     private String enrollmentId;
+
+//     // TEST USES grade, NOT yearLevel
+//     private String grade;
+
+//     private String cohort;
+
+//     @Builder.Default
+//     private boolean active = true;
+
+//     @Builder.Default
+//     private Instant lastUpdatedAt = Instant.now();
+
+//     @PreUpdate
+//     public void preUpdate() {
+//         this.lastUpdatedAt = Instant.now();
+//     }
+// }
 @Entity
 @Getter
 @Setter
@@ -17,18 +47,12 @@ public class StudentProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String enrollmentId;
 
-    // TEST USES grade, NOT yearLevel
     private String grade;
 
-    private String cohort;
-
-    @Builder.Default
-    private boolean active = true;
-
-    @Builder.Default
-    private Instant lastUpdatedAt = Instant.now();
+    private Instant lastUpdatedAt;
 
     @PreUpdate
     public void preUpdate() {
