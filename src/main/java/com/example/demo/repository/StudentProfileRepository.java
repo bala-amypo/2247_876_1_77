@@ -25,13 +25,11 @@ import java.util.Optional;
 public interface StudentProfileRepository
         extends JpaRepository<StudentProfile, Long> {
 
-    // --------------------------------------------------
-    // FIX: Explicit JPQL replaces invalid derived query
-    // --------------------------------------------------
+    // FIX: map method name to REAL entity field
     @Query("""
         SELECT s
         FROM StudentProfile s
-        WHERE s.user.id = ?1
+        WHERE s.student.id = ?1
     """)
     Optional<StudentProfile> findByUserId(Long userId);
 }
