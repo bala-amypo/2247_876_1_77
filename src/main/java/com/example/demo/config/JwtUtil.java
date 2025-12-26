@@ -35,39 +35,30 @@ package com.example.demo.config;
 import com.example.demo.entity.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-
-import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.util.Date;
 
 public class JwtUtil {
 
-    private final SecretKey secretKey;
-    private final long expirationMillis;
+    private final Key key;
+    private final long validity;
 
-    public JwtUtil(String secret, long expirationMillis) {
-        // ✅ Convert String → SecureKey (FIXES WeakKeyException)
-        this.secretKey = Keys.hmacShaKeyFor(
-                secret.getBytes(StandardCharsets.UTF_8)
-        );
-        this.expirationMillis = expirationMillis;
+    public JwtUtil(String secret, long validity) {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes());
+        this.validity = validity;
     }
 
     public String generateToken(User u) {
         return Jwts.builder()
-                // ✅ userId MUST be Integer (tests expect Integer, not Long)
-                .claim("userId", u.getId().intValue())
+                .claim("userId", u.getId())
                 .claim("email", u.getEmail())
                 .claim("role", u.getRole().name())
-                .setExpiration(new Date(System.currentTimeMillis() + expirationMillis))
-                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .setExpiration(new Date(System.currentTimeMillis() + validity))
+                .signWith(key)
                 .compact();
     }
 
     public Jws<Claims> validateAndParse(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(secretKey)
-                .build()
-                .parseClaimsJws(token);
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
     }
 }
