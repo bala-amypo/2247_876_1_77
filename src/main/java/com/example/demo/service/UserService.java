@@ -13,4 +13,12 @@ public interface UserService {
     User findByEmail(String email);
 
     List<User> listInstructors();
+
+    //extra code
+    
+    User register(RegisterRequest request);
+
+    User login(LoginRequest request);
+
+    User getById(Long id);
 }
