@@ -1,4 +1,3 @@
-
 package com.example.demo.serviceimpl;
 
 import com.example.demo.entity.Skill;
@@ -8,6 +7,12 @@ import com.example.demo.repository.AssessmentResultRepository;
 import com.example.demo.repository.SkillGapRecommendationRepository;
 import com.example.demo.repository.SkillRepository;
 import com.example.demo.repository.StudentProfileRepository;
+import com.example.demo.service.RecommendationService;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 import java.util.ArrayList;
 import java.util.List;
