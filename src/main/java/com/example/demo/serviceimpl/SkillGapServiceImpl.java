@@ -6,8 +6,9 @@ import com.example.demo.repository.SkillRepository;
 import com.example.demo.repository.AssessmentResultRepository;
 import java.util.Collections;
 import java.util.List;
-
-public class SkillGapServiceImpl {
+@Service
+public class SkillGapServiceImpl implements SkillGapService {
+ 
 
     public SkillGapServiceImpl(
             SkillGapRecordRepository repo,

@@ -5,8 +5,8 @@ import com.example.demo.entity.Skill;
 import com.example.demo.repository.SkillRepository;
 
 import java.util.List;
-
-public class SkillServiceImpl {
+@Service
+public class SkillServiceImpl implements SkillService{
 
     private final SkillRepository repo;
 

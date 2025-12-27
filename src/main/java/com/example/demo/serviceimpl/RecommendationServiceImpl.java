@@ -11,8 +11,8 @@ import com.example.demo.repository.StudentProfileRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-
-public class RecommendationServiceImpl {
+@Service
+public class RecommendationServiceImpl implements RecommendationService {
 
     private final AssessmentResultRepository arRepo;
     private final SkillGapRecommendationRepository recRepo;

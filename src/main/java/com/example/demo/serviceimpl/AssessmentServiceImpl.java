@@ -3,8 +3,8 @@ package com.example.demo.serviceimpl;
 
 import com.example.demo.entity.AssessmentResult;
 import com.example.demo.repository.AssessmentResultRepository;
-
-public class AssessmentServiceImpl {
+@Service //fix
+public class AssessmentServiceImpl implements AssessmentService{
 
     private final AssessmentResultRepository repo;
 

@@ -3,8 +3,9 @@ package com.example.demo.serviceimpl;
 import com.example.demo.entity.StudentProfile;
 import com.example.demo.repository.StudentProfileRepository;
 import java.util.List;
-
-public class StudentProfileServiceImpl {
+@Service
+public class StudentProfileServiceImpl implements StudentProfileService {
+{
 
     private final StudentProfileRepository repo;
 
