@@ -83,7 +83,7 @@ import java.time.Instant;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "*") // REQUIRED for Swagger "Failed to fetch"
+@CrossOrigin(origins = "*")
 public class AuthController {
 
     private final UserService userService;
@@ -110,11 +110,9 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody LoginRequest request) {
 
-        return ResponseEntity.ok(
-                userService.login(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
+        // UserService returns User directly (NOT Optional)
+        User user = userService.findByEmail(request.getEmail());
+
+        return ResponseEntity.ok(user);
     }
 }
