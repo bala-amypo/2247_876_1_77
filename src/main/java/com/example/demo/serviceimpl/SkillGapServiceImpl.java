@@ -4,6 +4,9 @@ import com.example.demo.entity.SkillGapRecord;
 import com.example.demo.repository.SkillGapRecordRepository;
 import com.example.demo.repository.SkillRepository;
 import com.example.demo.repository.AssessmentResultRepository;
+import com.example.demo.service.SkillGapService;
+import org.springframework.stereotype.Service;
+
 import java.util.Collections;
 import java.util.List;
 @Service
