@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
-public class AuthController {   // ✅ ONLY CHANGE IS HERE
+public class AuthController {
 
     private final UserService userService;
 
@@ -35,20 +35,31 @@ public class AuthController {   // ✅ ONLY CHANGE IS HERE
         this.userService = userService;
     }
 
-    // ---------- AUTH OPERATIONS ----------
-
+    // ---------- REGISTER ----------
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(userService.register(request));
+
+        User user = new User();
+        user.setEmail(request.getEmail());
+        user.setPassword(request.getPassword());
+        user.setFullName(request.getFullName());
+        user.setRole(request.getRole());
+
+        return ResponseEntity.ok(userService.save(user));
     }
 
+    // ---------- LOGIN ----------
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody LoginRequest request) {
-        return ResponseEntity.ok(userService.login(request));
+        return ResponseEntity.ok(
+                userService.findByEmailAndPassword(
+                        request.getEmail(),
+                        request.getPassword()
+                )
+        );
     }
 
-    // ---------- USER READ OPERATION ----------
-
+    // ---------- GET USER ----------
     @GetMapping("/{id}")
     public ResponseEntity<User> getById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getById(id));
