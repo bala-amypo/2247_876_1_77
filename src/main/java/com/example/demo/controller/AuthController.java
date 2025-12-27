@@ -83,7 +83,7 @@ import java.time.Instant;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "*") // fixes Swagger "Failed to fetch"
+@CrossOrigin(origins = "*") // REQUIRED for Swagger "Failed to fetch"
 public class AuthController {
 
     private final UserService userService;
@@ -96,26 +96,25 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody RegisterRequest request) {
 
-        User user = User.builder()
-                .fullName(request.getFullName())
-                .email(request.getEmail())
-                .password(request.getPassword())
-                .role(User.Role.valueOf(request.getRole().toUpperCase()))
-                .createdAt(Instant.now())
-                .build();
+        User user = new User();
+        user.setFullName(request.getFullName());
+        user.setEmail(request.getEmail());
+        user.setPassword(request.getPassword());
+        user.setRole(User.Role.valueOf(request.getRole().toUpperCase()));
+        user.setCreatedAt(Instant.now());
 
-        return ResponseEntity.ok(userService.save(user));
+        return ResponseEntity.ok(userService.register(user));
     }
 
     // ---------------- LOGIN ----------------
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody LoginRequest request) {
 
-        User user = userService.findByEmailAndPassword(
-                request.getEmail(),
-                request.getPassword()
+        return ResponseEntity.ok(
+                userService.login(
+                        request.getEmail(),
+                        request.getPassword()
+                )
         );
-
-        return ResponseEntity.ok(user);
     }
 }
