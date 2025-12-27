@@ -18,54 +18,30 @@
 // }
 package com.example.demo.controller;
 
-import com.example.demo.dto.LoginRequest;
-import com.example.demo.dto.RegisterRequest;
 import com.example.demo.entity.User;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/auth")
-public class AuthController {
+@RequestMapping("/users")
+public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public AuthController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    // ---------- REGISTER ----------
-    @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody RegisterRequest request) {
-
-        User user = new User();
-        user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
-        user.setFullName(request.getFullName());
-
-        // handle role safely
-        if (request.getRole() != null) {
-            user.setRole(User.Role.valueOf(request.getRole().toUpperCase()));
-        } else {
-            user.setRole(User.Role.STUDENT);
-        }
-
-        return ResponseEntity.ok(userRepository.save(user));
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUser(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getById(id));
     }
 
-    // ---------- LOGIN ----------
-    @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody LoginRequest request) {
-
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
-
-        if (!user.getPassword().equals(request.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
-        }
-
-        return ResponseEntity.ok(user);
+    @GetMapping("/instructors")
+    public ResponseEntity<List<User>> instructors() {
+        return ResponseEntity.ok(userService.listInstructors());
     }
-
-} // ✅ THIS CLOSING BRACE WAS MISSING EARLIER
+}
