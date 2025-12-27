@@ -79,8 +79,11 @@ import com.example.demo.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = "*") // fixes Swagger "Failed to fetch"
 public class AuthController {
 
     private final UserService userService;
@@ -89,13 +92,30 @@ public class AuthController {
         this.userService = userService;
     }
 
+    // ---------------- REGISTER ----------------
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(userService.register(request));
+
+        User user = User.builder()
+                .fullName(request.getFullName())
+                .email(request.getEmail())
+                .password(request.getPassword())
+                .role(User.Role.valueOf(request.getRole().toUpperCase()))
+                .createdAt(Instant.now())
+                .build();
+
+        return ResponseEntity.ok(userService.save(user));
     }
 
+    // ---------------- LOGIN ----------------
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody LoginRequest request) {
-        return ResponseEntity.ok(userService.login(request));
+
+        User user = userService.findByEmailAndPassword(
+                request.getEmail(),
+                request.getPassword()
+        );
+
+        return ResponseEntity.ok(user);
     }
 }
