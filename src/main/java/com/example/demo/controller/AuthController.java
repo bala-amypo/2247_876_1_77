@@ -16,12 +16,66 @@
 //         return "OK";
 //     }
 // }
+// 2 package com.example.demo.controller;
+
+// import com.example.demo.dto.LoginRequest;
+// import com.example.demo.dto.RegisterRequest;
+// import com.example.demo.entity.User;
+// import com.example.demo.repository.UserRepository;
+// import org.springframework.http.ResponseEntity;
+// import org.springframework.web.bind.annotation.*;
+
+// @RestController
+// @RequestMapping("/auth")
+// public class AuthController {
+
+//     private final UserRepository userRepository;
+
+//     public AuthController(UserRepository userRepository) {
+//         this.userRepository = userRepository;
+//     }
+
+//     // ---------- REGISTER ----------
+//     @PostMapping("/register")
+//     public ResponseEntity<User> register(@RequestBody RegisterRequest request) {
+
+//         User user = new User();
+//         user.setEmail(request.getEmail());
+//         user.setPassword(request.getPassword());
+//         user.setFullName(request.getFullName());
+
+//         // handle role safely
+//         if (request.getRole() != null) {
+//             user.setRole(User.Role.valueOf(request.getRole().toUpperCase()));
+//         } else {
+//             user.setRole(User.Role.STUDENT);
+//         }
+
+//         return ResponseEntity.ok(userRepository.save(user));
+//     }
+
+//     // ---------- LOGIN ----------
+//     @PostMapping("/login")
+//     public ResponseEntity<User> login(@RequestBody LoginRequest request) {
+
+//         User user = userRepository.findByEmail(request.getEmail())
+//                 .orElseThrow(() -> new RuntimeException("Invalid credentials"));
+
+//         if (!user.getPassword().equals(request.getPassword())) {
+//             throw new RuntimeException("Invalid credentials");
+//         }
+
+//         return ResponseEntity.ok(user);
+//     }
+
+// } // ✅ THIS CLOSING BRACE WAS MISSING EARLIER
 package com.example.demo.controller;
 
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.RegisterRequest;
 import com.example.demo.entity.User;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.service.UserService;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,43 +83,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public AuthController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public AuthController(UserService userService) {
+        this.userService = userService;
     }
 
-    // ---------- REGISTER ----------
     @PostMapping("/register")
     public ResponseEntity<User> register(@RequestBody RegisterRequest request) {
-
-        User user = new User();
-        user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
-        user.setFullName(request.getFullName());
-
-        // handle role safely
-        if (request.getRole() != null) {
-            user.setRole(User.Role.valueOf(request.getRole().toUpperCase()));
-        } else {
-            user.setRole(User.Role.STUDENT);
-        }
-
-        return ResponseEntity.ok(userRepository.save(user));
+        return ResponseEntity.ok(userService.register(request));
     }
 
-    // ---------- LOGIN ----------
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody LoginRequest request) {
-
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Invalid credentials"));
-
-        if (!user.getPassword().equals(request.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
-        }
-
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(userService.login(request));
     }
-
-} // ✅ THIS CLOSING BRACE WAS MISSING EARLIER
+}
