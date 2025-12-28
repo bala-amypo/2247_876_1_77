@@ -47,17 +47,17 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    // ✅ 256-bit secure key (MANDATORY for HS256)
+    // ✅ 256-bit secure key (required for HS256)
     private static final SecretKey SECRET_KEY =
             Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     private static final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 hour
 
-    // ✅ REQUIRED: no-arg constructor (tests depend on this)
+    // ✅ REQUIRED by tests
     public JwtUtil() {
     }
 
-    // ✅ REQUIRED: generate token
+    // ✅ Generate JWT token
     public String generateToken(String subject) {
         return Jwts.builder()
                 .setSubject(subject)
@@ -67,8 +67,12 @@ public class JwtUtil {
                 .compact();
     }
 
-    // ✅ REQUIRED: tests EXPECT THIS EXACT METHOD
+    // ✅ REQUIRED by TestNG tests
     public Jws<Claims> validateAndParse(String token) {
         JwtParser parser = Jwts.parserBuilder()
                 .setSigningKey(SECRET_KEY)
                 .build();
+
+        return parser.parseClaimsJws(token);
+    }
+}
