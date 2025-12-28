@@ -99,6 +99,8 @@ import com.example.demo.service.UserService;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.example.demo.dto.LoginRequest;
+
 
 @RestController
 @RequestMapping("/users")
