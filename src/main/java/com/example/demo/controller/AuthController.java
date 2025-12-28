@@ -1,65 +1,14 @@
-// package com.example.demo.controller;
 
-// import org.springframework.web.bind.annotation.*;
-
-// @RestController
-// @RequestMapping("/auth")
-// public class AuthController {
-
-//     @PostMapping("/login")
-//     public String login() {
-//         return "OK";
-//     }
-
-//     @PostMapping("/register")
-//     public String register() {
-//         return "OK";
-//     }
-// }
-
-
-
-
-// package com.example.demo.controller;  2 imp swagger
-
-// import com.example.demo.entity.User;
-// import com.example.demo.service.UserService;
-// import org.springframework.http.ResponseEntity;
-// import org.springframework.web.bind.annotation.*;
-
-// import java.util.List;
-
-// @RestController
-// @RequestMapping("/users")
-// public class UserController {
-
-//     private final UserService userService;
-
-//     public UserController(UserService userService) {
-//         this.userService = userService;
-//     }
-
-//     @GetMapping("/{id}")
-//     public ResponseEntity<User> getUser(@PathVariable Long id) {
-//         return ResponseEntity.ok(userService.getById(id));
-//     }
-
-//     @GetMapping("/instructors")
-//     public ResponseEntity<List<User>> instructors() {
-//         return ResponseEntity.ok(userService.listInstructors());
-//     }
-// }
 
 // package com.example.demo.controller;
 
 // import com.example.demo.entity.User;
 // import com.example.demo.service.UserService;
+
 // import org.springframework.http.ResponseEntity;
 // import org.springframework.web.bind.annotation.*;
+// import com.example.demo.dto.LoginRequest;
 
-
-
-// import java.util.List;
 
 // @RestController
 // @RequestMapping("/users")
@@ -71,77 +20,74 @@
 //         this.userService = userService;
 //     }
 
-//     // ✅ NEW POST METHOD (ONLY ADDITION)
+//     // ✅ CREATE USER
 //     @PostMapping
 //     public ResponseEntity<User> createUser(@RequestBody User user) {
 //         return ResponseEntity.ok(userService.register(user));
 //     }
 
-// }
-
-
-//     // EXISTING METHODS (DO NOT TOUCH)
+//     // ✅ GET USER BY ID
 //     @GetMapping("/{id}")
-//     public ResponseEntity<User> getById(@PathVariable Long id) {
+//     public ResponseEntity<User> getUser(@PathVariable Long id) {
 //         return ResponseEntity.ok(userService.getById(id));
 //     }
 
+//     // ✅ GET INSTRUCTORS
 //     @GetMapping("/instructors")
-//     public ResponseEntity<List<User>> getInstructors() {
+//     public ResponseEntity<?> getInstructors() {
 //         return ResponseEntity.ok(userService.listInstructors());
 //     }
+
+//     // ✅ SIMPLE LOGIN (NO TOKEN, SERVICE-SAFE)
+//    @PostMapping("/login")
+//     public ResponseEntity<User> login(@RequestBody LoginRequest request) {
+
+//     User user = userService.findByEmail(request.getEmail());
+
+//     // optional validation
+//     if (!user.getFullName().equals(request.getFullName())) {
+//         return ResponseEntity.status(401).build();
+//     }
+
+//     return ResponseEntity.ok(user);
 // }
 
+// }
 package com.example.demo.controller;
 
-import com.example.demo.entity.User;
-import com.example.demo.service.UserService;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 import com.example.demo.dto.LoginRequest;
+import com.example.demo.dto.LoginResponse;
+import com.example.demo.entity.User;
+import com.example.demo.repository.UserRepository;
+import com.example.demo.security.JwtUtil;
 
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/auth")
 public class AuthController {
 
-    private final UserService userService;
+    private final UserRepository userRepo;
+    private final JwtUtil jwtUtil;
 
-    public AuthController(UserService userService) {
-        this.userService = userService;
+    public AuthController(UserRepository userRepo, JwtUtil jwtUtil) {
+        this.userRepo = userRepo;
+        this.jwtUtil = jwtUtil;
     }
 
-    // ✅ CREATE USER
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        return ResponseEntity.ok(userService.register(user));
+    @PostMapping("/login")
+    public LoginResponse login(@RequestBody LoginRequest request) {
+
+        User user = userRepo.findByEmail(request.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // simple name check
+        if (!user.getFullName().equals(request.getFullName())) {
+            throw new RuntimeException("Invalid name");
+        }
+
+        String token = jwtUtil.generateToken(user.getEmail());
+
+        return new LoginResponse(token);
     }
-
-    // ✅ GET USER BY ID
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.getById(id));
-    }
-
-    // ✅ GET INSTRUCTORS
-    @GetMapping("/instructors")
-    public ResponseEntity<?> getInstructors() {
-        return ResponseEntity.ok(userService.listInstructors());
-    }
-
-    // ✅ SIMPLE LOGIN (NO TOKEN, SERVICE-SAFE)
-   @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody LoginRequest request) {
-
-    User user = userService.findByEmail(request.getEmail());
-
-    // optional validation
-    if (!user.getFullName().equals(request.getFullName())) {
-        return ResponseEntity.status(401).build();
-    }
-
-    return ResponseEntity.ok(user);
-}
-
 }
