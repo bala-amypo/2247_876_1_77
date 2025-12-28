@@ -61,11 +61,11 @@
 // }
 package com.example.demo.config;
 
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.security.SecurityRequirement;
-import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -73,36 +73,24 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
 @Configuration
+@SecurityScheme(
+        name = "bearerAuth",
+        type = SecuritySchemeType.HTTP,
+        scheme = "bearer",
+        bearerFormat = "JWT"
+)
+@SecurityRequirement(name = "bearerAuth") // 🔑 THIS ENABLES AUTHORIZE BUTTON
 public class SwaggerConfig {
 
-    private static final String SECURITY_SCHEME_NAME = "bearerAuth";
-
     @Bean
-    public OpenAPI swaggerOpenAPI() {
+    public OpenAPI openAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("AmyPO – Skill Gap & Recommendation API")
-                        .description("Swagger UI with JWT Authorization support")
-                        .version("1.0")
-                )
-                // ✅ IMPORTANT: must match actual running protocol
+                        .title("AmyPO Backend API")
+                        .description("Skill Gap & Recommendation System")
+                        .version("1.0"))
                 .servers(List.of(
-                        new Server().url("http://9137.32procr.amypo.ai")
-                ))
-                // ✅ THIS ENABLES AUTHORIZE BUTTON
-                .addSecurityItem(
-                        new SecurityRequirement().addList(SECURITY_SCHEME_NAME)
-                )
-                .components(
-                        new Components()
-                                .addSecuritySchemes(
-                                        SECURITY_SCHEME_NAME,
-                                        new SecurityScheme()
-                                                .name(SECURITY_SCHEME_NAME)
-                                                .type(SecurityScheme.Type.HTTP)
-                                                .scheme("bearer")
-                                                .bearerFormat("JWT")
-                                )
-                );
+                        new Server().url("https://9137.32procr.amypo.ai")
+                ));
     }
 }
