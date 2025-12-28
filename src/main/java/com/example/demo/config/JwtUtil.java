@@ -42,37 +42,46 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
 
-    // ✅ 256-bit secure key (required for HS256)
-    private static final SecretKey SECRET_KEY =
-            Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private SecretKey secretKey;
+    private long expirationMillis;
 
-    private static final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 hour
-
-    // ✅ REQUIRED by tests
+    // ✅ REQUIRED by Spring
     public JwtUtil() {
+        this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        this.expirationMillis = 1000 * 60 * 60; // 1 hour
     }
 
-    // ✅ Generate JWT token
+    // ✅ REQUIRED by TestNG (THIS FIXES YOUR ERROR)
+    public JwtUtil(String secret, int expirationSeconds) {
+        this.secretKey = Keys.hmacShaKeyFor(
+                secret.getBytes(StandardCharsets.UTF_8)
+        );
+        this.expirationMillis = expirationSeconds * 1000L;
+    }
+
+    // ✅ REQUIRED by tests
     public String generateToken(String subject) {
         return Jwts.builder()
                 .setSubject(subject)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SECRET_KEY)
+                .setExpiration(new Date(System.currentTimeMillis() + expirationMillis))
+                .signWith(secretKey)
                 .compact();
     }
 
-    // ✅ REQUIRED by TestNG tests
+    // ✅ REQUIRED by tests
     public Jws<Claims> validateAndParse(String token) {
         JwtParser parser = Jwts.parserBuilder()
-                .setSigningKey(SECRET_KEY)
+                .setSigningKey(secretKey)
                 .build();
 
         return parser.parseClaimsJws(token);
     }
 }
+
