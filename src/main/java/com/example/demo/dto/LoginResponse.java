@@ -19,10 +19,14 @@
 package com.example.demo.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+@Data
 @AllArgsConstructor
 public class LoginResponse {
+    private Long id;
+    private String email;
+    private String fullName;
+    private String role;
     private String token;
 }

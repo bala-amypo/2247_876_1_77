@@ -56,14 +56,12 @@
 package com.example.demo.controller;
 
 import com.example.demo.config.JwtUtil;
-import com.example.demo.dto.*;
+import com.example.demo.dto.AuthLoginRequest;
+import com.example.demo.dto.AuthRegisterRequest;
+import com.example.demo.dto.AuthResponse;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
-
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.Instant;
 
 @RestController
 @RequestMapping("/auth")
@@ -71,7 +69,6 @@ public class AuthController {
 
     private final UserRepository userRepo;
     private final JwtUtil jwtUtil;
-    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public AuthController(UserRepository userRepo, JwtUtil jwtUtil) {
         this.userRepo = userRepo;
@@ -80,32 +77,45 @@ public class AuthController {
 
     // ✅ REGISTER
     @PostMapping("/register")
-    public User register(@RequestBody RegisterRequest request) {
+    public AuthResponse register(@RequestBody AuthRegisterRequest req) {
 
-        User user = User.builder()
-                .email(request.getEmail())
-                .fullName(request.getFullName())
-                .password(encoder.encode(request.getPassword())) // ✅ NOT NULL
-                .role(User.Role.valueOf(request.getRole()))
-                .createdAt(Instant.now())
-                .build();
+        User user = new User();
+        user.setEmail(req.getEmail());
+        user.setFullName(req.getFullName());
+        user.setRole(req.getRole());
 
-        return userRepo.save(user);
+        user = userRepo.save(user);
+
+        String token = jwtUtil.generateToken(user.getEmail());
+
+        return new AuthResponse(
+                user.getId(),
+                user.getEmail(),
+                user.getFullName(),
+                user.getRole().name(),
+                token
+        );
     }
 
-    // ✅ LOGIN + TOKEN
+    // ✅ LOGIN
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginRequest request) {
+    public AuthResponse login(@RequestBody AuthLoginRequest req) {
 
-        User user = userRepo.findByEmail(request.getEmail())
+        User user = userRepo.findByEmail(req.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (!encoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid password");
+        if (!user.getFullName().equals(req.getFullName())) {
+            throw new RuntimeException("Invalid name");
         }
 
         String token = jwtUtil.generateToken(user.getEmail());
 
-        return new LoginResponse(token);
+        return new AuthResponse(
+                user.getId(),
+                user.getEmail(),
+                user.getFullName(),
+                user.getRole().name(),
+                token
+        );
     }
 }
