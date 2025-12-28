@@ -55,14 +55,15 @@
 // }
 package com.example.demo.controller;
 
-import com.example.demo.dto.LoginRequest;
-import com.example.demo.dto.LoginResponse;
-import com.example.demo.dto.RegisterRequest;
+import com.example.demo.config.JwtUtil;
+import com.example.demo.dto.*;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.security.JwtUtil;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.Instant;
 
 @RestController
 @RequestMapping("/auth")
@@ -70,6 +71,7 @@ public class AuthController {
 
     private final UserRepository userRepo;
     private final JwtUtil jwtUtil;
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     public AuthController(UserRepository userRepo, JwtUtil jwtUtil) {
         this.userRepo = userRepo;
@@ -80,14 +82,13 @@ public class AuthController {
     @PostMapping("/register")
     public User register(@RequestBody RegisterRequest request) {
 
-        if (userRepo.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("User already exists");
-        }
-
-        User user = new User();
-        user.setEmail(request.getEmail());
-        user.setFullName(request.getFullName());
-        user.setRole(User.Role.valueOf(request.getRole()));
+        User user = User.builder()
+                .email(request.getEmail())
+                .fullName(request.getFullName())
+                .password(encoder.encode(request.getPassword())) // ✅ NOT NULL
+                .role(User.Role.valueOf(request.getRole()))
+                .createdAt(Instant.now())
+                .build();
 
         return userRepo.save(user);
     }
@@ -99,8 +100,8 @@ public class AuthController {
         User user = userRepo.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (!user.getFullName().equals(request.getFullName())) {
-            throw new RuntimeException("Invalid name");
+        if (!encoder.matches(request.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid password");
         }
 
         String token = jwtUtil.generateToken(user.getEmail());
