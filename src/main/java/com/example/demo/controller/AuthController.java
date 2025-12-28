@@ -132,7 +132,7 @@ public class AuthController {
 
     // ✅ SIMPLE LOGIN (NO TOKEN, SERVICE-SAFE)
    @PostMapping("/login")
-public ResponseEntity<User> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<User> login(@RequestBody LoginRequest request) {
 
     User user = userService.findByEmail(request.getEmail());
 
