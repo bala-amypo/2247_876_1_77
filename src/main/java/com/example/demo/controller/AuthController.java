@@ -75,6 +75,16 @@ public class AuthController {
         return ResponseEntity.ok(userService.register(user));
     }
 
+    @PostMapping("/login") //login
+public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+    String token = userService.loginAndGenerateToken(
+            request.getEmail(),
+            request.getPassword()
+    );
+    return ResponseEntity.ok(new LoginResponse(token));
+}
+
+
     // EXISTING METHODS (DO NOT TOUCH)
     @GetMapping("/{id}")
     public ResponseEntity<User> getById(@PathVariable Long id) {
