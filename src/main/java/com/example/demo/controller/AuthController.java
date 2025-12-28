@@ -50,18 +50,57 @@
 //     }
 // }
 
-package com.example.demo.controller;
+// package com.example.demo.controller;
 
-import com.example.demo.entity.User;
-import com.example.demo.service.UserService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+// import com.example.demo.entity.User;
+// import com.example.demo.service.UserService;
+// import org.springframework.http.ResponseEntity;
+// import org.springframework.web.bind.annotation.*;
+
+
+
+// import java.util.List;
+
+// @RestController
+// @RequestMapping("/users")
+// public class AuthController {
+
+//     private final UserService userService;
+
+//     public AuthController(UserService userService) {
+//         this.userService = userService;
+//     }
+
+//     // ✅ NEW POST METHOD (ONLY ADDITION)
+//     @PostMapping
+//     public ResponseEntity<User> createUser(@RequestBody User user) {
+//         return ResponseEntity.ok(userService.register(user));
+//     }
+
+// }
+
+
+//     // EXISTING METHODS (DO NOT TOUCH)
+//     @GetMapping("/{id}")
+//     public ResponseEntity<User> getById(@PathVariable Long id) {
+//         return ResponseEntity.ok(userService.getById(id));
+//     }
+
+//     @GetMapping("/instructors")
+//     public ResponseEntity<List<User>> getInstructors() {
+//         return ResponseEntity.ok(userService.listInstructors());
+//     }
+// }
+
+package com.example.demo.controller;
 
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.LoginResponse;
+import com.example.demo.entity.User;
+import com.example.demo.service.UserService;
 
-
-import java.util.List;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
@@ -73,32 +112,31 @@ public class AuthController {
         this.userService = userService;
     }
 
-    // ✅ NEW POST METHOD (ONLY ADDITION)
+    // ✅ CREATE USER
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
         return ResponseEntity.ok(userService.register(user));
     }
 
-  @PostMapping("/login") //login
-public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
-    String token = userService.loginAndGenerateToken(
-            request.getEmail(),
-            request.getPassword()
-    );
-    return ResponseEntity.ok(new LoginResponse(token));
-}
-
-}
-
-
-    // EXISTING METHODS (DO NOT TOUCH)
+    // ✅ GET USER BY ID
     @GetMapping("/{id}")
-    public ResponseEntity<User> getById(@PathVariable Long id) {
+    public ResponseEntity<User> getUser(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getById(id));
     }
 
+    // ✅ GET INSTRUCTORS
     @GetMapping("/instructors")
-    public ResponseEntity<List<User>> getInstructors() {
+    public ResponseEntity<?> getInstructors() {
         return ResponseEntity.ok(userService.listInstructors());
+    }
+
+    // ✅ LOGIN (JWT TOKEN)
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+        String token = userService.loginAndGenerateToken(
+                request.getEmail(),
+                request.getPassword()
+        );
+        return ResponseEntity.ok(new LoginResponse(token));
     }
 }
