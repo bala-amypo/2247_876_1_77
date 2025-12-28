@@ -129,12 +129,17 @@ public class AuthController {
     }
 
     // ✅ SIMPLE LOGIN (NO TOKEN, SERVICE-SAFE)
-    @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody User request) {
+   @PostMapping("/login")
+public ResponseEntity<User> login(@RequestBody LoginRequest request) {
 
-        // uses EXISTING method only
-        User user = userService.findByEmail(request.getEmail());
+    User user = userService.findByEmail(request.getEmail());
 
-        return ResponseEntity.ok(user);
+    // optional validation
+    if (!user.getFullName().equals(request.getFullName())) {
+        return ResponseEntity.status(401).build();
     }
+
+    return ResponseEntity.ok(user);
+}
+
 }

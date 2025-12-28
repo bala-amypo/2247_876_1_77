@@ -17,9 +17,7 @@ package com.example.demo.dto;
 public class LoginRequest {
 
     private String email;
-    private String password;
-
-    public LoginRequest() {}
+    private String fullName;
 
     public String getEmail() {
         return email;
@@ -29,11 +27,11 @@ public class LoginRequest {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 }
