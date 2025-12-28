@@ -94,8 +94,6 @@
 
 package com.example.demo.controller;
 
-import com.example.demo.dto.LoginRequest;
-import com.example.demo.dto.LoginResponse;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 
@@ -130,13 +128,13 @@ public class AuthController {
         return ResponseEntity.ok(userService.listInstructors());
     }
 
-    // ✅ LOGIN (JWT TOKEN)
+    // ✅ SIMPLE LOGIN (NO TOKEN, SERVICE-SAFE)
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
-        String token = userService.loginAndGenerateToken(
-                request.getEmail(),
-                request.getPassword()
-        );
-        return ResponseEntity.ok(new LoginResponse(token));
+    public ResponseEntity<User> login(@RequestBody User request) {
+
+        // uses EXISTING method only
+        User user = userService.findByEmail(request.getEmail());
+
+        return ResponseEntity.ok(user);
     }
 }
