@@ -34,43 +34,41 @@
 package com.example.demo.config;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
-import java.security.Key;
+import javax.crypto.SecretKey;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
 
-    // ✅ 256-bit secure key (HS256 compliant)
-    private static final Key KEY =
-            Keys.hmacShaKeyFor("THIS_IS_A_VERY_SECURE_256_BIT_SECRET_KEY_123456".getBytes());
+    // ✅ 256-bit secure key (MANDATORY for HS256)
+    private static final SecretKey SECRET_KEY =
+            Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
     private static final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 hour
 
-    // ✅ REQUIRED BY TESTS
+    // ✅ REQUIRED: no-arg constructor (tests depend on this)
     public JwtUtil() {
     }
 
-    // ✅ REQUIRED BY TESTS
+    // ✅ REQUIRED: generate token
     public String generateToken(String subject) {
         return Jwts.builder()
                 .setSubject(subject)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(KEY, SignatureAlgorithm.HS256)
+                .signWith(SECRET_KEY)
                 .compact();
     }
 
-    // ✅ REQUIRED BY TESTS
-    public Claims validateAndParse(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(KEY)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-    }
-}
+    // ✅ REQUIRED: tests EXPECT THIS EXACT METHOD
+    public Jws<Claims> validateAndParse(String token) {
+        JwtParser parser = Jwts.parserBuilder()
+                .setSigningKey(SECRET_KEY)
+                .build();
