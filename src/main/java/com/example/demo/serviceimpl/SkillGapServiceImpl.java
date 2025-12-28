@@ -32,6 +32,7 @@ import com.example.demo.entity.StudentProfile;
 import com.example.demo.repository.SkillGapRecordRepository;
 import com.example.demo.repository.SkillRepository;
 import com.example.demo.repository.AssessmentResultRepository;
+import com.example.demo.service.SkillGapService;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -39,7 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class SkillGapServiceImpl {
+public class SkillGapServiceImpl implements SkillGapService {
 
     private final SkillGapRecordRepository repo;
     private final SkillRepository skillRepo;
@@ -53,6 +54,7 @@ public class SkillGapServiceImpl {
         this.skillRepo = skillRepo;
     }
 
+    @Override
     public List<SkillGapRecord> computeGaps(Long studentProfileId) {
 
         List<Skill> skills = skillRepo.findByActiveTrue();
