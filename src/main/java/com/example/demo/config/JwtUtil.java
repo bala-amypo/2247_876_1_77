@@ -33,26 +33,44 @@
 // }
 package com.example.demo.config;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.SecretKey;
+import java.security.Key;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
 
-    private final SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    private final long EXPIRATION = 1000 * 60 * 60 * 24;
+    // ✅ 256-bit secure key (HS256 compliant)
+    private static final Key KEY =
+            Keys.hmacShaKeyFor("THIS_IS_A_VERY_SECURE_256_BIT_SECRET_KEY_123456".getBytes());
 
-    public String generateToken(String email) {
+    private static final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 hour
+
+    // ✅ REQUIRED BY TESTS
+    public JwtUtil() {
+    }
+
+    // ✅ REQUIRED BY TESTS
+    public String generateToken(String subject) {
         return Jwts.builder()
-                .setSubject(email)
+                .setSubject(subject)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
-                .signWith(key)
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(KEY, SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+    // ✅ REQUIRED BY TESTS
+    public Claims validateAndParse(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(KEY)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 }
