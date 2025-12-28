@@ -57,6 +57,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.LoginResponse;
+import com.example.demo.dto.RegisterRequest;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.security.JwtUtil;
@@ -75,13 +76,29 @@ public class AuthController {
         this.jwtUtil = jwtUtil;
     }
 
+    // ✅ REGISTER
+    @PostMapping("/register")
+    public User register(@RequestBody RegisterRequest request) {
+
+        if (userRepo.existsByEmail(request.getEmail())) {
+            throw new RuntimeException("User already exists");
+        }
+
+        User user = new User();
+        user.setEmail(request.getEmail());
+        user.setFullName(request.getFullName());
+        user.setRole(User.Role.valueOf(request.getRole()));
+
+        return userRepo.save(user);
+    }
+
+    // ✅ LOGIN + TOKEN
     @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginRequest request) {
 
         User user = userRepo.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // simple name check
         if (!user.getFullName().equals(request.getFullName())) {
             throw new RuntimeException("Invalid name");
         }
