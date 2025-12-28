@@ -57,6 +57,10 @@ import com.example.demo.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.demo.dto.LoginRequest;
+import com.example.demo.dto.LoginResponse;
+
+
 import java.util.List;
 
 @RestController
@@ -75,13 +79,15 @@ public class AuthController {
         return ResponseEntity.ok(userService.register(user));
     }
 
-    @PostMapping("/login") //login
+  @PostMapping("/login") //login
 public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
     String token = userService.loginAndGenerateToken(
             request.getEmail(),
             request.getPassword()
     );
     return ResponseEntity.ok(new LoginResponse(token));
+}
+
 }
 
 
