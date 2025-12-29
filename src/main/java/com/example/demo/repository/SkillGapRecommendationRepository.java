@@ -11,7 +11,7 @@ import java.util.List;
 public interface SkillGapRecommendationRepository
         extends JpaRepository<SkillGapRecommendation, Long> {
 
-    // ✅ FIX: explicit JPQL query to avoid method-name parsing error
+   
     @Query("""
            SELECT r
            FROM SkillGapRecommendation r

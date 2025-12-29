@@ -24,7 +24,7 @@ public class Skill {
     private String description;
     private int minCompetencyScore;
 
-    // ✅ REQUIRED BY TESTS
+    
     @Builder.Default
     private boolean active = true;
 }
