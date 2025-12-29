@@ -1,38 +1,38 @@
-// // package com.example.demo.serviceimpl;
+package com.example.demo.serviceimpl;
 
-// // import com.example.demo.entity.StudentProfile;
-// // import com.example.demo.repository.StudentProfileRepository;
-// // import com.example.demo.service.StudentProfileService; //1
-// // import org.springframework.stereotype.Service; //2
-// // import java.util.List;
-// // @Service
-// // public class StudentProfileServiceImpl implements StudentProfileService {
-// // {
+import com.example.demo.entity.StudentProfile;
+import com.example.demo.repository.StudentProfileRepository;
+import com.example.demo.service.StudentProfileService; //1
+import org.springframework.stereotype.Service; //2
+import java.util.List;
+@Service
+public class StudentProfileServiceImpl implements StudentProfileService {
+{
 
-// //     private final StudentProfileRepository repo;
+    private final StudentProfileRepository repo;
 
-// //     public StudentProfileServiceImpl(StudentProfileRepository repo) {
-// //         this.repo = repo;
-// //     }
+    public StudentProfileServiceImpl(StudentProfileRepository repo) {
+        this.repo = repo;
+    }
 
-// //     public StudentProfile createOrUpdateProfile(StudentProfile profile) {
-// //         return repo.save(profile);
-// //     }
+    public StudentProfile createOrUpdateProfile(StudentProfile profile) {
+        return repo.save(profile);
+    }
 
-// //     public StudentProfile getByUserId(Long userId) {
-// //         return repo.findByUserId(userId)
-// //                 .orElseThrow(() -> new RuntimeException("profile not found"));
-// //     }
+    public StudentProfile getByUserId(Long userId) {
+        return repo.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("profile not found"));
+    }
 
-// //     public StudentProfile getProfileById(Long id) {
-// //         return repo.findById(id)
-// //                 .orElseThrow(() -> new RuntimeException("profile not found"));
-// //     }
+    public StudentProfile getProfileById(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("profile not found"));
+    }
 
-// //     public List<StudentProfile> getAllProfiles() {
-// //         return repo.findAll();
-// //     }
-// // }
+    public List<StudentProfile> getAllProfiles() {
+        return repo.findAll();
+    }
+}
 
 // package com.example.demo.serviceimpl;
 
@@ -76,43 +76,43 @@
 // }
 
 
-package com.example.demo.serviceimpl;
+// // package com.example.demo.serviceimpl;
 
-import com.example.demo.entity.StudentProfile;
-import com.example.demo.repository.StudentProfileRepository;
-import com.example.demo.service.StudentProfileService;
-import org.springframework.stereotype.Service;
+// // import com.example.demo.entity.StudentProfile;
+// // import com.example.demo.repository.StudentProfileRepository;
+// // import com.example.demo.service.StudentProfileService;
+// // import org.springframework.stereotype.Service;
 
-import java.util.List;
+// // import java.util.List;
 
-@Service
-public class StudentProfileServiceImpl implements StudentProfileService {
+// // @Service
+// // public class StudentProfileServiceImpl implements StudentProfileService {
 
-    private final StudentProfileRepository profileRepository;
+// //     private final StudentProfileRepository profileRepository;
 
-    public StudentProfileServiceImpl(StudentProfileRepository profileRepository) {
-        this.profileRepository = profileRepository;
-    }
+// //     public StudentProfileServiceImpl(StudentProfileRepository profileRepository) {
+// //         this.profileRepository = profileRepository;
+// //     }
 
-    @Override
-    public StudentProfile createOrUpdateProfile(StudentProfile profile) {
-        return profileRepository.save(profile);
-    }
+// //     @Override
+// //     public StudentProfile createOrUpdateProfile(StudentProfile profile) {
+// //         return profileRepository.save(profile);
+// //     }
 
-    @Override
-    public StudentProfile getProfileById(Long id) {
-        return profileRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Profile not found"));
-    }
+// //     @Override
+// //     public StudentProfile getProfileById(Long id) {
+// //         return profileRepository.findById(id)
+// //                 .orElseThrow(() -> new RuntimeException("Profile not found"));
+// //     }
 
-    @Override
-    public StudentProfile getByUserId(Long userId) {
-        return profileRepository.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Profile not found for user"));
-    }
+// //     @Override
+// //     public StudentProfile getByUserId(Long userId) {
+// //         return profileRepository.findByUserId(userId)
+// //                 .orElseThrow(() -> new RuntimeException("Profile not found for user"));
+// //     }
 
-    @Override
-    public List<StudentProfile> getAllProfiles() {
-        return profileRepository.findAll();
-    }
-}
+// //     @Override
+// //     public List<StudentProfile> getAllProfiles() {
+// //         return profileRepository.findAll();
+// //     }
+// // }
