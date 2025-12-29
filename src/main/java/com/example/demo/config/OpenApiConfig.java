@@ -1,34 +1,36 @@
 
-// // package com.example.demo.config;
+package com.example.demo.config;
 
-// // import io.swagger.v3.oas.models.OpenAPI;
-// // import org.springframework.context.annotation.*;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.servers.Server;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-// // @Configuration
-// // public class OpenApiConfig {
+import java.util.List;
 
-// //     @Bean
-// //     public OpenAPI openAPI() {
-// //         return new OpenAPI();
-// //     }
-// // }
-// package com.example.demo.config;
+@Configuration
+public class OpenApiConfig {
 
-// import io.swagger.v3.oas.models.OpenAPI;
-// import io.swagger.v3.oas.models.servers.Server;
-// import org.springframework.context.annotation.Bean;
-// import org.springframework.context.annotation.Configuration;
+    @Bean
+    public OpenAPI customOpenAPI() {
 
-// import java.util.List;
-
-// @Configuration
-// public class OpenApiConfig {
-
-//     @Bean
-//     public OpenAPI openAPI() {
-//         return new OpenAPI()
-//                 .servers(List.of(
-//                         new Server().url("https://9137.32procr.amypo.ai")
-//                 ));
-//     }
-// }
+        return new OpenAPI()
+                .servers(List.of(
+                        new Server().url("https://9111.pro604cr.amypo.ai")
+                ))
+                .components(new Components()
+                        .addSecuritySchemes("bearerAuth",
+                                new SecurityScheme()
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT")
+                        )
+                )
+                .addSecurityItem(
+                        new SecurityRequirement().addList("bearerAuth")
+                );
+    }
+}
