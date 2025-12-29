@@ -1,86 +1,86 @@
 
-// package com.example.demo.entity;
-
-// import jakarta.persistence.*;
-// import lombok.*;
-
-// import java.time.Instant;
-
-// @Entity
-// @Getter
-// @Setter
-// @NoArgsConstructor
-// @AllArgsConstructor
-// @Builder
-// public class StudentProfile {
-
-//     @Id
-//     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//     private Long id;
-
-//     @OneToOne
-//     private User user;
-
-//     @Column(unique = true)
-//     private String enrollmentId;
-
-//     // REQUIRED BY TESTS
-//     private String grade;
-
-//     private Integer yearLevel;
-
-//     private Boolean active = true;
-
-//     // ✅ MUST NOT BE NULL (required by TestNG)
-//     @Builder.Default
-//     private Instant lastUpdatedAt = Instant.now();
-
-//     @PreUpdate
-//     public void preUpdate() {
-//         lastUpdatedAt = Instant.now();
-//     }
-// }
-
-
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.Instant;
 
 @Entity
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor @Builder
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class StudentProfile {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
+    @OneToOne
     private User user;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String enrollmentId;
 
-    @Column(nullable = false)
-    private String cohort;
+    // REQUIRED BY TESTS
+    private String grade;
 
-    @Column(nullable = false)
     private Integer yearLevel;
 
-    @Builder.Default
     private Boolean active = true;
 
-    private Instant lastUpdatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        lastUpdatedAt = Instant.now();
-    }
+    // ✅ MUST NOT BE NULL (required by TestNG)
+    @Builder.Default
+    private Instant lastUpdatedAt = Instant.now();
 
     @PreUpdate
-    protected void onUpdate() {
+    public void preUpdate() {
         lastUpdatedAt = Instant.now();
     }
 }
+
+
+// package com.example.demo.entity;
+
+// import jakarta.persistence.*;
+// import lombok.*;
+// import java.time.Instant;
+
+// @Entity
+// @Getter @Setter
+// @NoArgsConstructor @AllArgsConstructor @Builder
+// public class StudentProfile {
+//     @Id
+//     @GeneratedValue(strategy = GenerationType.IDENTITY)
+//     private Long id;
+
+//     @OneToOne(optional = false)
+//     @JoinColumn(name = "user_id", nullable = false)
+//     private User user;
+
+//     @Column(unique = true, nullable = false)
+//     private String enrollmentId;
+
+//     @Column(nullable = false)
+//     private String cohort;
+
+//     @Column(nullable = false)
+//     private Integer yearLevel;
+
+//     @Builder.Default
+//     private Boolean active = true;
+
+//     private Instant lastUpdatedAt;
+
+//     @PrePersist
+//     protected void onCreate() {
+//         lastUpdatedAt = Instant.now();
+//     }
+
+//     @PreUpdate
+//     protected void onUpdate() {
+//         lastUpdatedAt = Instant.now();
+//     }
+// }
