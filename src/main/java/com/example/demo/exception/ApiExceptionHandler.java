@@ -1,13 +1,29 @@
 
+// package com.example.demo.exception;
+
+// import org.springframework.web.bind.annotation.*;
+
+// @RestControllerAdvice
+// public class ApiExceptionHandler {
+
+//     @ExceptionHandler(Exception.class)
+//     public String handle(Exception ex) {
+//         return ex.getMessage();
+//     }
+// }
+
+
 package com.example.demo.exception;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
-    public String handle(Exception ex) {
-        return ex.getMessage();
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> handleRuntime(RuntimeException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
