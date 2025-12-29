@@ -1,12 +1,4 @@
 
-// package com.example.demo.controller;
-
-// import org.springframework.web.bind.annotation.*;
-
-// @RestController
-// @RequestMapping("/api/students")
-// public class StudentProfileController {
-// }
 package com.example.demo.controller;
 
 import com.example.demo.entity.StudentProfile;

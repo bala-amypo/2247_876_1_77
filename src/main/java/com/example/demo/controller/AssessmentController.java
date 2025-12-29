@@ -1,12 +1,4 @@
 
-// package com.example.demo.controller;
-
-// import org.springframework.web.bind.annotation.*;
-
-// @RestController
-// @RequestMapping("/api/assessments")
-// public class AssessmentController {
-// }
 package com.example.demo.controller;
 
 import com.example.demo.entity.AssessmentResult;
